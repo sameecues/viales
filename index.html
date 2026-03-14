@@ -12,7 +12,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 
 <style>
-    /* RESET Y VARIABLES */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
         --bg-dark: #0f172a; --bg-gradient: #1e293b; --card-bg: #ffffff;
@@ -38,10 +37,9 @@
     
     main { padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
     
-    /* --- BANDERAS DE IDIOMA --- */
     .lang-controls-top {
         display: flex; gap: 15px; margin-bottom: 30px; align-items: center;
-        width: 100%; justify-content: flex-end; /* Alineación segura a la derecha */
+        width: 100%; justify-content: flex-end;
     }
     .btn-lang {
         background-color: transparent; border: none; 
@@ -56,10 +54,9 @@
         transform: scale(1.15);
     }
     
-    /* --- HERO Y CAJA NARANJA --- */
     .hero { 
         display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 50px; 
-        align-items: center; justify-content: center; /* Centrado vertical y horizontal */
+        align-items: center; justify-content: center;
         animation: fadeUp 0.8s ease; 
     }
     .orange-box {
@@ -93,7 +90,6 @@
     .title-section h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; margin-bottom: 10px; line-height: 1.1; }
     .subtitle { color: #94a3b8; font-size: 1.1rem; margin-bottom: 25px; }
     
-    /* --- CONTROLES Y PICO DE FRECUENCIA --- */
     .controls-wrapper { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; margin-top: 15px; }
     .control-col { display: flex; flex-direction: column; gap: 8px; }
     .control-label { font-size: 0.75rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
@@ -116,7 +112,6 @@
     }
     .btn-mapa:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(234, 88, 12, 0.25); }
     
-    /* PICO PILL BLANCO Y AJUSTADO */
     .pico-pill {
         height: 46px; background: #ffffff; border-radius: 10px; padding: 0 18px; 
         display: inline-flex; align-items: center; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
@@ -196,36 +191,26 @@
     .modal-body { flex-grow: 1; width: 100%; height: 100%; overflow: hidden; border-radius: 8px; }
     .modal-body iframe, .modal-body img { width: 100%; height: 100%; border: none; object-fit: contain; }
 
-    /* =========================================
-       📱 ADAPTABILIDAD MOBILE (RESPONSIVE)
-       ========================================= */
+
     @media (max-width: 768px) {
-        /* Centrar banderas en celular */
         .lang-controls-top { justify-content: center; margin-bottom: 25px; }
         
-        /* Achicar un poco los logos */
         .logo { height: 35px; }
         
-        /* Convertir el Hero en una columna perfectamente centrada */
         .hero { flex-direction: column; text-align: center; gap: 30px; align-items: center; }
         
-        /* Caja naranja centrada y estirada */
         .orange-box { width: 100%; max-width: 100%; padding: 25px; text-align: center; }
         .box-buttons { justify-content: center; flex-wrap: wrap; }
         
-        /* Títulos centrados */
         .title-section { text-align: center; width: 100%; align-items: center; }
         
-        /* Controles (Filtros, Mapa y Pico) centrados uno debajo del otro */
         .controls-wrapper { flex-direction: column; align-items: center; width: 100%; gap: 15px; }
         .control-col { width: 100%; align-items: center; }
         .control-input { width: 100% !important; text-align: center; } 
         .btn-mapa { width: 100%; }
         
-        /* Pico de frecuencia centrado */
         .pico-pill { width: 100%; justify-content: center; }
         
-        /* Ajustar la grilla para celular */
         .grid { grid-template-columns: 1fr; gap: 20px; }
         .card { padding: 20px; }
     }
@@ -378,7 +363,6 @@
     </footer>
 
 <script>
-    // --- SISTEMA DE IDIOMAS Y DICCIONARIOS ---
     let idiomaActual = 'es';
 
     const diccionario = {
