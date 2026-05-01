@@ -37,8 +37,13 @@
     main { padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
     
     .lang-controls-top {
-        display: flex; gap: 15px; margin-bottom: 30px; align-items: center;
-        width: 100%; justify-content: flex-end;
+        display: flex; 
+        gap: 15px; 
+        margin-bottom: 30px; 
+        align-items: center;
+        justify-content: flex-end;
+        width: 100%; 
+        height: 40px;
     }
     .btn-lang {
         background-color: transparent; border: none; 
@@ -228,9 +233,9 @@
     body.light-mode .pico-pill { background: #ffffff; }
     body.light-mode .pico-pill .lbl { color: #334155; }
 
-    /* Estilos del botón nuevo */
+
     .btn-theme-toggle {
-        margin-right: auto; /* Mantiene el botón a la izquierda y empuja los idiomas a la derecha */
+        margin-right: auto;
         background-color: var(--theme-input-bg);
         border: 1px solid var(--theme-input-border);
         color: var(--theme-text);
@@ -244,7 +249,8 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         cursor: pointer;
         transition: all 0.3s ease;
-    }
+        margin-top: 0;
+        margin-bottom: 0;
     }
     body.light-mode .btn-theme-toggle { 
         background-color: #ffffff; 
