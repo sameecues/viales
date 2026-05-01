@@ -241,7 +241,7 @@
 
     .btn-theme-toggle {
         background-color: var(--theme-input-bg);
-        border: 1px solid var(--theme-input-border);
+        border: 2px solid rgba(255, 255, 255, 0.3); /* Borde blanco translúcido */
         color: var(--theme-text);
         display: flex;
         align-items: center;
@@ -254,16 +254,17 @@
         cursor: pointer;
         transition: all 0.3s ease;
     }
-   
+
     body.light-mode .btn-theme-toggle { 
         background-color: #ffffff; 
-        border-color: #cbd5e1; 
+        border: 2px solid #cbd5e1; 
     }
-    
+
     .btn-theme-toggle:hover { 
         border-color: var(--primary); 
         color: var(--primary); 
         transform: scale(1.15);
+        box-shadow: 0 0 10px rgba(234, 88, 12, 0.5);
     }
 
     /* Transiciones para que el cambio de color sea suave */
