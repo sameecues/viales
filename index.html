@@ -230,15 +230,32 @@
 
     /* Estilos del botón nuevo */
     .btn-theme-toggle {
-        margin-right: auto; /* Empuja las banderas a la derecha */
-        background-color: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: inherit;
-        display: flex; align-items: center; justify-content: center;
+        margin-right: auto; /* Mantiene el botón a la izquierda y empuja los idiomas a la derecha */
+        background-color: var(--theme-input-bg);
+        border: 1px solid var(--theme-input-border);
+        color: var(--theme-text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px; 
+        height: 36px;
+        border-radius: 50%;
+        padding: 0;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
-    body.light-mode .btn-theme-toggle { background-color: #ffffff; border-color: #cbd5e1; }
-    .btn-theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
+    }
+    body.light-mode .btn-theme-toggle { 
+        background-color: #ffffff; 
+        border-color: #cbd5e1; 
+    }
+    
+    .btn-theme-toggle:hover { 
+        border-color: var(--primary); 
+        color: var(--primary); 
+        transform: scale(1.15); /* Mismo efecto hover que las banderas */
+    }
 
     /* Transiciones para que el cambio de color sea suave */
     body, header, footer, .card, .pico-pill, .control-input, .subtitle, .control-label, .card h3 {
