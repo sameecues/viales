@@ -271,6 +271,15 @@
     body, header, footer, .card, .pico-pill, .control-input, .subtitle, .control-label, .card h3 {
         transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
     }
+
+   body.light-mode .chart-iframe, 
+body.light-mode .chart-img,
+body.light-mode #iframe-pico {
+    /* Invertimos el color (negro a blanco) y rotamos el tono para no perder los naranjas/rojos */
+    filter: invert(1) hue-rotate(180deg) brightness(1.1) contrast(0.9);
+    transition: filter 0.4s ease;
+}
+   
 </style>
 </head>
 <body>
@@ -513,7 +522,13 @@
         const isLight = body.classList.contains('light-mode');
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
         actualizarIconoTema(isLight);
-    }
+
+       const themeName = isLight ? 'light' : 'dark';
+    document.querySelectorAll('iframe').forEach(iframe => {
+        if(iframe.contentWindow) {
+            // Le enviamos un mensaje al archivo HTML que está dentro del iframe
+            iframe.contentWindow.postMessage({ theme: themeName }, '*');
+        }
 
     function actualizarIconoTema(isLight) {
         document.getElementById('icon-sun').style.display = isLight ? 'none' : 'block';
@@ -673,7 +688,11 @@
         const anio = mes_anio.split("-")[0];
         const timeStamp = new Date().getTime();
         const rutaBaseHtml = `graficos/${idiomaActual}/${anio}/${mes_anio}`;
-
+        const tema = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+        // Ahora, agregamos &theme=${tema} a todas las URLs de tus iframes.
+    // Ejemplo de cómo quedaría una de tus líneas:
+    cargarGraficoHTML('iframe-vehiculos', 'fallback-vehiculos', 'link-vehiculos', `${rutaBaseHtml}/vehiculo_involucrado.html?v=${timeStamp}&theme=${tema}`);
+       
         const iframePico = document.getElementById('iframe-pico');
         iframePico.src = `${rutaBaseHtml}/pico_frecuencia.html?v=${timeStamp}`;
         
