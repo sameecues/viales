@@ -509,12 +509,12 @@
     }
 
     function toggleTheme() {
-        const body = document.body;
-        body.classList.toggle('light-mode');
-        const isLight = body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        actualizarIconoTema(isLight);
-
+        const body = document.body;
+        body.classList.toggle('light-mode');
+        const isLight = body.classList.contains('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        actualizarIconoTema(isLight);
+    }
     function actualizarIconoTema(isLight) {
         document.getElementById('icon-sun').style.display = isLight ? 'none' : 'block';
         document.getElementById('icon-moon').style.display = isLight ? 'block' : 'none';
