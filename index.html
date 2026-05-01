@@ -213,6 +213,37 @@
         .grid { grid-template-columns: 1fr; gap: 20px; }
         .card { padding: 20px; }
     }
+
+   /* --- SISTEMA DE TEMA CLARO --- */
+    body.light-mode { background: #f1f5f9; color: #1e293b; }
+    body.light-mode header { background: rgba(255, 255, 255, 0.95); }
+    body.light-mode .card, body.light-mode .modal-content { background: #ffffff; color: #334155; }
+    body.light-mode .subtitle, body.light-mode .control-label, body.light-mode .card h3 { color: #475569; }
+    body.light-mode .control-input { 
+        background-color: #ffffff; color: #1e293b; border-color: #cbd5e1; 
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23475569' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    }
+    body.light-mode .control-input option { background: #ffffff; color: #1e293b; }
+    body.light-mode footer { background-color: #e2e8f0; color: #1e293b; border-top-color: rgba(0,0,0,0.1); }
+    body.light-mode .pico-pill { background: #ffffff; }
+    body.light-mode .pico-pill .lbl { color: #334155; }
+
+    /* Estilos del botón nuevo */
+    .btn-theme-toggle {
+        margin-right: auto; /* Empuja las banderas a la derecha */
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: inherit;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    body.light-mode .btn-theme-toggle { background-color: #ffffff; border-color: #cbd5e1; }
+    .btn-theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Transiciones para que el cambio de color sea suave */
+    body, header, footer, .card, .pico-pill, .control-input, .subtitle, .control-label, .card h3 {
+        transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+    }
 </style>
 </head>
 <body>
@@ -229,6 +260,11 @@
             <button class="btn-lang" onclick="cambiarIdioma('pt')" title="Português" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/250px-Flag_of_Brazil.svg.png');"></button>
         </div>
 
+    <button id="btn-theme" class="btn-lang btn-theme-toggle" onclick="toggleTheme()" title="Modo Claro / Oscuro">
+        <svg id="icon-sun" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+       
         <div class="hero">
             <div class="orange-box">
                 <h2 data-i18n="box_title">Informe Mensual</h2>
@@ -411,7 +447,7 @@
 
     function cambiarIdioma(lang) {
         idiomaActual = lang;
-        document.querySelectorAll('.btn-lang').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.btn-lang[onclick^="cambiarIdioma"]').forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
 
         document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -427,6 +463,30 @@
         actualizarPeriodo();
     }
 
+/* --- SISTEMA MODO CLARO / OSCURO --- */
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            actualizarIconoTema(true);
+        } else {
+            actualizarIconoTema(false);
+        }
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        body.classList.toggle('light-mode');
+        const isLight = body.classList.contains('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        actualizarIconoTema(isLight);
+    }
+
+    function actualizarIconoTema(isLight) {
+        document.getElementById('icon-sun').style.display = isLight ? 'none' : 'block';
+        document.getElementById('icon-moon').style.display = isLight ? 'block' : 'none';
+    }
+   
     const periodos = [
         "2026-04","2026-03", "2026-02", "2026-01" 
     ];
@@ -434,8 +494,9 @@
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
     
     function init() {
-        const selAnio = document.getElementById('sel-anio');
-        const aniosUnicos = [...new Set(periodos.map(p => p.split('-')[0]))].sort().reverse();
+       initTheme(); // <-- AGREGAR ESTA LÍNEA 
+       const selAnio = document.getElementById('sel-anio');
+       const aniosUnicos = [...new Set(periodos.map(p => p.split('-')[0]))].sort().reverse();
         
         aniosUnicos.forEach(a => {
             const o = document.createElement('option');
@@ -631,6 +692,8 @@
 
     window.onload = init;
 
+
+   
 </script>
 </body>
 </html>
