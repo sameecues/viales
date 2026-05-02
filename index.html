@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#233259" id="meta-theme-color">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SAME Stats">
+<link rel="apple-touch-icon" href="https://i.imgur.com/GXTFolo.png">
 <title>Incidentes de Tránsito | SAME / ECUES</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -317,6 +319,45 @@
     body.light-mode ::-webkit-scrollbar-track { background: #F8FAFC; }
     body.light-mode ::-webkit-scrollbar-thumb { background: #CBD5E1; border-color: #F8FAFC; }
 
+/* =========================================
+       📱 OPTIMIZACIONES NATIVAS PARA MÓVILES
+       ========================================= */
+
+    button, a, select, .pico-pill, .control-input {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    button:active, .btn-descarga:active, .btn-mapa:active, .btn-informe:active {
+        transform: scale(0.95) !important;
+        transition: transform 0.1s ease;
+    }
+
+    body {
+        -webkit-text-size-adjust: 100%;
+    }
+
+    header {
+        padding-top: max(15px, env(safe-area-inset-top));
+        padding-left: max(5%, env(safe-area-inset-left));
+        padding-right: max(5%, env(safe-area-inset-right));
+    }
+    footer {
+        padding-bottom: max(30px, env(safe-area-inset-bottom));
+        padding-left: max(5%, env(safe-area-inset-left));
+        padding-right: max(5%, env(safe-area-inset-right));
+    }
+
+
+    @media (max-width: 768px) {
+        .control-input { 
+            font-size: 16px !important; 
+        }
+        
+        .modal-content {
+            overscroll-behavior-y: none;
+        }
+    }
+   
 </style>
 </head>
 <body>
