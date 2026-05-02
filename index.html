@@ -309,8 +309,8 @@
                     <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </button>
             </div>
-       
-        <div class="lang-box">
+            
+            <div class="lang-box">
                 <button class="btn-lang active" aria-label="Español" onclick="cambiarIdioma('es')" title="Español" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flag_of_Argentina.png/960px-Flag_of_Argentina.png');"></button>
                 <button class="btn-lang" aria-label="English" onclick="cambiarIdioma('en')" title="English" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Flag_of_the_United_States_%28DDD-F-416E_specifications%29.svg/330px-Flag_of_the_United_States_%28DDD-F-416E_specifications%29.svg.png');"></button>
                 <button class="btn-lang" aria-label="Português" onclick="cambiarIdioma('pt')" title="Português" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/250px-Flag_of_Brazil.svg.png');"></button>
@@ -361,7 +361,7 @@
                             <div class="dot"></div>
                             <div class="lbl" data-i18n="card4_title">Pico de Frecuencia</div>
                             <div class="pico-iframe-container">
-                                <iframe id="iframe-pico" src="about:blank" loading="lazy"></iframe>
+                                <iframe id="iframe-pico" src="about:blank"></iframe>
                             </div>
                         </div>
                     </div>
@@ -376,7 +376,7 @@
                     <button id="link-tipos" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
                 </div>
                 <div class="chart-wrap">
-                    <img id="img-tipos" class="chart-img" src="" alt="Miniatura" loading="lazy">
+                    <img id="img-tipos" class="chart-img" src="" alt="Miniatura">
                     <p id="fallback-tipos" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
                 </div>
             </article>
@@ -387,7 +387,7 @@
                     <button id="link-vehiculos" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
                 </div>
                 <div class="chart-wrap">
-                    <iframe id="iframe-vehiculos" class="chart-iframe" src="" scrolling="no" loading="lazy"></iframe>
+                    <iframe id="iframe-vehiculos" class="chart-iframe" src="" scrolling="no"></iframe>
                     <p id="fallback-vehiculos" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
                 </div>
             </article>
@@ -398,7 +398,7 @@
                     <button id="link-zonas" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
                 </div>
                 <div class="chart-wrap">
-                    <iframe id="iframe-zonas" class="chart-iframe" src="" scrolling="no" loading="lazy"></iframe>
+                    <iframe id="iframe-zonas" class="chart-iframe" src="" scrolling="no"></iframe>
                     <p id="fallback-zonas" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
                 </div>
             </article>
@@ -409,7 +409,7 @@
                     <button id="link-grilla" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
                 </div>
                 <div class="chart-wrap">
-                    <iframe id="iframe-grilla" class="chart-iframe" src="" scrolling="no" loading="lazy"></iframe>
+                    <iframe id="iframe-grilla" class="chart-iframe" src="" scrolling="no"></iframe>
                     <p id="fallback-grilla" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
                 </div>
             </article>
@@ -420,7 +420,7 @@
                     <button id="link-traslados" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
                 </div>
                 <div class="chart-wrap">
-                    <iframe id="iframe-traslados" class="chart-iframe" src="" scrolling="no" loading="lazy"></iframe>
+                    <iframe id="iframe-traslados" class="chart-iframe" src="" scrolling="no"></iframe>
                     <p id="fallback-traslados" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
                 </div>
             </article>
@@ -431,7 +431,7 @@
                     <button id="link-etario" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
                 </div>
                 <div class="chart-wrap">
-                    <iframe id="iframe-etario" class="chart-iframe" src="" scrolling="no" loading="lazy"></iframe>
+                    <iframe id="iframe-etario" class="chart-iframe" src="" scrolling="no"></iframe>
                     <p id="fallback-etario" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
                 </div>
             </article>
@@ -451,6 +451,7 @@
     </footer>
 
 <script>
+    /* LÓGICA INTACTA - NO MODIFICADA */
     let idiomaActual = 'es';
 
     const diccionario = {
@@ -677,7 +678,7 @@
         if (esImagen) {
             modalBody.innerHTML = `<img src="${ruta}" alt="Gráfico ampliado">`;
         } else {
-            modalBody.innerHTML = `<iframe src="${ruta}" loading="lazy"></iframe>`;
+            modalBody.innerHTML = `<iframe src="${ruta}"></iframe>`;
         }
         
         modal.style.display = 'flex';
