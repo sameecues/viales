@@ -1,821 +1,427 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<meta name="theme-color" content="#233259" id="meta-theme-color">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="SAME Stats">
-<link rel="apple-touch-icon" href="https://i.imgur.com/Wg5JTB0.png">
-<title>Incidentes de Tránsito | SAME / ECUES</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-
-<style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personas en Estado de Vulnerabilidad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    :root {
-        /* Paleta Original Melhorada */
-        --bg-dark: #1E293B;          /* Fundo base mais sofisticado */
-        --bg-gradient: #0F172A;
-        --card-bg: #FFFFFF;
-        --primary: #EA580C;
-        --primary-light: #F97316;
-        --text-dark: #334155;
-        --text-muted: #64748B;
-        --header-bg: rgba(255, 255, 255, 0.9);
-        --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        
-        /* Cores para as bordas dos cards (A ideia que você gostou) */
-        --c-accent-1: #EA580C;
-        --c-accent-2: #3B82F6;
-        --c-accent-3: #10B981;
-        --c-accent-4: #8B5CF6;
-        --c-accent-5: #EC4899;
-        --c-accent-6: #F59E0B;
-    }
-    
-    html { scroll-behavior: smooth; }
-    
-    body {
-        font-family: 'Inter', sans-serif;
-        background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-gradient) 100%);
-        color: white; 
-        min-height: 100vh;
-        transition: var(--transition-smooth);
-        -webkit-font-smoothing: antialiased;
-    }
-    
-    /* --- HEADER (Glassmorphism Original Refinado) --- */
-    header {
-        background: var(--header-bg); 
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        padding: 15px 5%; display: flex; justify-content: space-between;
-        align-items: center; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        position: sticky; top: 0; z-index: 100;
-        transition: var(--transition-smooth);
-    }
-    .logo { height: 48px; transition: transform 0.3s ease; }
-    .logo:hover { transform: scale(1.05); }
-    
-    main { padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
-    
-    /* --- CONTROLES SUPERIORES (Botões Redondos Originais) --- */
-    .lang-controls-top {
-        display: flex; justify-content: space-between; align-items: center;
-        width: 100%; margin-bottom: 35px;
-    }
-
-    .lang-box { display: flex; gap: 15px; align-items: center; }
-   
-    .btn-lang {
-        background-color: transparent; border: none; 
-        border-radius: 50%; width: 40px; height: 40px; cursor: pointer; 
-        transition: var(--transition-smooth); padding: 0; 
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        background-size: cover; background-position: center;
-    }
-    .btn-lang:hover { transform: scale(1.15); box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
-    .btn-lang.active { 
-        box-shadow: 0 0 0 3px rgba(255,255,255,0.2), 0 0 0 6px var(--primary); 
-        transform: scale(1.15);
-    }
-
-    .btn-theme-toggle {
-        background-color: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        display: flex; align-items: center; justify-content: center;
-        width: 44px; height: 44px; border-radius: 50%; padding: 0;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer;
-        transition: var(--transition-smooth);
-        backdrop-filter: blur(5px);
-    }
-    .btn-theme-toggle:hover { 
-        border-color: var(--primary); color: var(--primary); 
-        transform: scale(1.15); box-shadow: 0 0 15px rgba(234, 88, 12, 0.4);
-    }
-    
-    /* --- HERO SECTION (A sua caixa Laranja Premium) --- */
-    .hero { 
-        display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 50px; 
-        align-items: center; justify-content: center;
-        animation: fadeUp 0.8s ease backwards; 
-    }
-    
-    .orange-box {
-        background: linear-gradient(135deg, var(--primary-light), var(--primary));
-        padding: 35px 40px; border-radius: 24px; width: 100%; max-width: 450px;
-        color: white; box-shadow: 0 20px 40px rgba(234, 88, 12, 0.3); 
-        position: relative; overflow: hidden; flex: 1; min-width: 320px;
-    }
-    .orange-box::after {
-        content: ''; position: absolute; top: -50%; right: -20%;
-        width: 250px; height: 250px; background: rgba(255,255,255,0.15); 
-        border-radius: 50%; pointer-events: none;
-    }
-    .orange-box h2 { font-size: 1.6rem; margin-bottom: 12px; font-weight: 800; letter-spacing: -0.5px; }
-    .orange-box p { font-size: 1rem; line-height: 1.6; margin-bottom: 25px; opacity: 0.95; }
-    
-    .box-buttons { display: flex; gap: 12px; align-items: center; position: relative; z-index: 2; }
-    .btn-informe, .btn-descarga {
-        display: inline-flex; align-items: center; justify-content: center;
-        background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.1);
-        cursor: pointer; border-radius: 12px; color: white; text-decoration: none; 
-        transition: var(--transition-smooth); font-family: 'Inter', sans-serif;
-        backdrop-filter: blur(5px);
-    }
-    .btn-informe { padding: 12px 20px; font-weight: 600; font-size: 0.9rem; gap: 8px; flex-grow: 1; min-height: 48px; }
-    .btn-descarga { width: 48px; height: 48px; flex-shrink: 0; }
-    .btn-informe:hover, .btn-descarga:hover { 
-        background: rgba(255, 255, 255, 0.35); transform: translateY(-3px); 
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-    
-    .title-section { flex: 1.5; min-width: 320px; display: flex; flex-direction: column; justify-content: center; }
-    .title-section h1 { font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 10px; line-height: 1.1; letter-spacing: -1px; }
-    .subtitle { color: #94A3B8; font-size: 1.1rem; margin-bottom: 25px; line-height: 1.5; transition: color 0.3s; }
-    
-    .controls-wrapper { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; margin-top: 15px; }
-    .control-col { display: flex; flex-direction: column; gap: 8px; }
-    .control-label { font-size: 0.75rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
-    
-    .control-input {
-        height: 48px; padding: 0 40px 0 16px; 
-        border-radius: 12px; background-color: rgba(255, 255, 255, 0.08); color: white;
-        border: 1px solid rgba(255, 255, 255, 0.15); font-family: 'Inter', sans-serif; 
-        font-weight: 600; font-size: 0.95rem; outline: none; transition: var(--transition-smooth); 
-        cursor: pointer; appearance: none; -webkit-appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394A3B8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat; background-position: right 14px center; backdrop-filter: blur(4px);
-    }
-    .control-input:hover, .control-input:focus { background-color: rgba(255, 255, 255, 0.15); border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.2); }
-    .control-input option { background: #1E293B; color: white; }
-    
-    .btn-mapa {
-        height: 48px; background: rgba(234, 88, 12, 0.15); color: #ffedd5;
-        padding: 0 20px; border: 1px solid rgba(234, 88, 12, 0.4); border-radius: 12px;
-        font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition-smooth);
-        display: inline-flex; justify-content: center; align-items: center; gap: 8px; font-family: 'Inter', sans-serif;
-    }
-    .btn-mapa:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(234, 88, 12, 0.3); }
-    
-    .pico-pill {
-        height: 48px; background: rgba(255,255,255,0.95); border-radius: 12px; padding: 0 18px; 
-        display: inline-flex; align-items: center; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
-        transition: var(--transition-smooth);
-    }
-    .pico-pill .dot { width: 10px; height: 10px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); animation: pulse 2s infinite; }
-    .pico-pill .lbl { font-size: 0.75rem; text-transform: uppercase; color: var(--text-dark); font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; }
-    .pico-iframe-container { height: 34px; display: flex; align-items: center; justify-content: center; min-width: 150px; }
-    #iframe-pico { width: 100%; height: 100%; border: none; background: transparent; overflow: hidden; display: block; }
-
-    /* --- TARJETAS (Com a ideia das cores que você gostou e cantos arredondados) --- */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-    
-    .card {
-        background: var(--card-bg); border-radius: 24px; padding: 25px; color: var(--text-dark);
-        box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15); 
-        transition: var(--transition-smooth); display: flex; flex-direction: column; position: relative;
-        overflow: hidden;
-        animation: fadeUp 0.6s ease backwards;
-    }
-    
-    /* A linha sutil colorida no topo de cada card */
-    .card::before {
-        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
-        transition: var(--transition-smooth);
-    }
-    .card:nth-child(1) { animation-delay: 0.1s; } .card:nth-child(1)::before { background: var(--c-accent-1); }
-    .card:nth-child(2) { animation-delay: 0.2s; } .card:nth-child(2)::before { background: var(--c-accent-2); }
-    .card:nth-child(3) { animation-delay: 0.3s; } .card:nth-child(3)::before { background: var(--c-accent-3); }
-    .card:nth-child(4) { animation-delay: 0.4s; } .card:nth-child(4)::before { background: var(--c-accent-4); }
-    .card:nth-child(5) { animation-delay: 0.5s; } .card:nth-child(5)::before { background: var(--c-accent-5); }
-    .card:nth-child(6) { animation-delay: 0.6s; } .card:nth-child(6)::before { background: var(--c-accent-6); }
-
-    .card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25); }
-    .card:hover::before { height: 8px; } /* A linha cresce ao passar o mouse */
-        
-    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .card h3 {
-        font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted); margin: 0;
-        font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;
-    }
-    
-    .btn-expand {
-        background: rgba(100, 116, 139, 0.1); border: none; border-radius: 8px; color: var(--text-muted);
-        width: 36px; height: 36px; display: flex; justify-content: center; align-items: center;
-        cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 1.1rem;
-    }
-    .btn-expand:hover { background: var(--primary); color: white; transform: scale(1.1); }
-
-    .chart-wrap { flex-grow: 1; min-height: 250px; position: relative; display:flex; justify-content:center; align-items:center; flex-direction:column; overflow:hidden; }
-    .chart-iframe { width: 100%; height: 260px; border: none; border-radius: 12px; display: none; }
-    .chart-img { width: 100%; max-height: 280px; object-fit: contain; border-radius: 12px; display: none; }
-    .chart-fallback {
-        width: 100%; height: 260px; border-radius: 12px;
-        background: linear-gradient(90deg, rgba(241,245,249,0.5) 25%, rgba(226,232,240,0.8) 50%, rgba(241,245,249,0.5) 75%);
-        background-size: 200% 100%; animation: pulseLoading 1.5s infinite; color: transparent;
-    }
-
-    /* --- FOOTER ORIGINAL --- */
-    footer {
-        background-color: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px);
-        margin-top: 60px; padding: 30px 5%; border-top: 1px solid rgba(255,255,255,0.05); 
-        font-size: 0.9rem; color: #FFFFFF; font-weight: 600; display: flex; justify-content: center; 
-        align-items: center; flex-wrap: wrap; text-align: center; transition: var(--transition-smooth);
-    }
-    
-    /* --- MODAL LIGHBOX --- */
-    body.modal-open { overflow: hidden; }
-
-    .modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; 
-        background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-        z-index: 9999; display: none; justify-content: center; align-items: center;
-        opacity: 0; transition: opacity 0.3s ease; padding: 20px;
-    }
-    .modal-overlay.active { display: flex; opacity: 1; }
-    
-    .modal-content {
-        width: 100%; max-width: 1200px; height: 90%; background: var(--card-bg);
-        border-radius: 20px; position: relative; padding: 20px;
-        box-shadow: 0 25px 50px rgba(0,0,0,0.5); transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        display: flex; flex-direction: column;
-    }
-    .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
-    
-    .modal-close {
-        position: absolute; top: -15px; right: -15px; background: var(--primary);
-        color: white; border: 3px solid var(--card-bg); border-radius: 50%; width: 44px; height: 44px;
-        font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10; transition: var(--transition-smooth);
-    }
-    .modal-close:hover { background: var(--primary-light); transform: rotate(90deg); }
-    
-    .modal-body { flex-grow: 1; width: 100%; height: 100%; overflow: hidden; border-radius: 12px; -webkit-overflow-scrolling: touch; }
-    .modal-body iframe, .modal-body img { width: 100%; height: 100%; border: none; object-fit: contain; }
-
-    /* --- ANIMACIONES --- */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes pulseLoading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(234, 88, 12, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); } }
-
-    /* --- SCROLLBAR --- */
-    ::-webkit-scrollbar { width: 10px; height: 10px; }
-    ::-webkit-scrollbar-track { background: var(--bg-dark); }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 5px; border: 2px solid var(--bg-dark); }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
-
-    /* --- RESPONSIVE DESIGN --- */
-    @media (max-width: 768px) {
-        header { padding: 12px 5%; }
-        .logo { height: 36px; }
-        .lang-controls-top { margin-bottom: 25px; }
-        .hero { flex-direction: column; text-align: center; gap: 30px; }
-        .orange-box { padding: 25px 20px; border-radius: 20px; }
-        .box-buttons { flex-direction: column; width: 100%; }
-        .btn-informe { width: 100%; }
-        .btn-descarga { width: 100%; border-radius: 12px; }
-        .title-section { text-align: center; align-items: center; }
-        .controls-wrapper { flex-direction: column; width: 100%; gap: 12px; }
-        .control-col { width: 100%; align-items: center; }
-        .control-label { display: none; } 
-        .control-input { width: 100% !important; text-align: center; background-position: right 20px center; } 
-        .btn-mapa { width: 100%; }
-        .pico-pill { width: 100%; justify-content: center; }
-        .grid { grid-template-columns: 1fr; gap: 20px; }
-        .card { padding: 20px; border-radius: 20px; }
-        .modal-overlay { padding: 10px; }
-        .modal-content { height: 95%; border-radius: 16px; padding: 15px; }
-        .modal-close { top: -10px; right: -10px; width: 38px; height: 38px; }
-    }
-
-   /* --- SISTEMA DE TEMA CLARO --- */
-    body.light-mode { background: #F8FAFC; color: #0F172A; }
-    body.light-mode header { background: rgba(255, 255, 255, 0.9); border-bottom: 1px solid rgba(0,0,0,0.05); }
-    body.light-mode .btn-theme-toggle { background-color: white; border-color: #E2E8F0; color: #475569; }
-    body.light-mode .btn-theme-toggle:hover { border-color: var(--primary); }
-    
-    body.light-mode .card, body.light-mode .modal-content { background: #FFFFFF; color: #334155; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.08); }
-    body.light-mode .subtitle { color: #475569; }
-    
-    body.light-mode .control-input { 
-        background-color: #FFFFFF; color: #1E293B; border-color: #CBD5E1; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23475569' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-    }
-    body.light-mode .control-input option { background: #FFFFFF; color: #1E293B; }
-    body.light-mode .btn-mapa { background: white; color: var(--primary); }
-    
-    body.light-mode .pico-pill { background: #FFFFFF; border: 1px solid #E2E8F0; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-    
-    body.light-mode footer { background-color: #F1F5F9; color: #475569; border-top: 1px solid rgba(0,0,0,0.05); }
-    body.light-mode ::-webkit-scrollbar-track { background: #F8FAFC; }
-    body.light-mode ::-webkit-scrollbar-thumb { background: #CBD5E1; border-color: #F8FAFC; }
-
-/* =========================================
-       📱 OPTIMIZACIONES NATIVAS PARA MÓVILES
-       ========================================= */
-
-    button, a, select, .pico-pill, .control-input {
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    button:active, .btn-descarga:active, .btn-mapa:active, .btn-informe:active {
-        transform: scale(0.95) !important;
-        transition: transform 0.1s ease;
-    }
-
-    body {
-        -webkit-text-size-adjust: 100%;
-    }
-
-    header {
-        padding-top: max(15px, env(safe-area-inset-top));
-        padding-left: max(5%, env(safe-area-inset-left));
-        padding-right: max(5%, env(safe-area-inset-right));
-    }
-    footer {
-        padding-bottom: max(30px, env(safe-area-inset-bottom));
-        padding-left: max(5%, env(safe-area-inset-left));
-        padding-right: max(5%, env(safe-area-inset-right));
-    }
-
-
-    @media (max-width: 768px) {
-        .control-input { 
-            font-size: 16px !important; 
+    <style>
+        /* =========================================
+           VARIABLES CSS PARA TEMAS
+           ========================================= */
+        :root {
+            /* Modo Claro */
+            --body-bg: #f4f7fb; 
+            --bg-glow: radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 50%), 
+                       radial-gradient(circle at 100% 0%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+            
+            --card-bg: rgba(255, 255, 255, 0.85); 
+            --header-bg: rgba(255, 255, 255, 0.75);
+            --primary-text: #0f172a;
+            --secondary-text: #64748b;
+            --card-title-text: #1e293b;
+            
+            --accent-color: #06b6d4; 
+            --accent-gradient: linear-gradient(135deg, #8b5cf6, #06b6d4); 
+            
+            --iframe-placeholder-bg: rgba(248, 250, 252, 0.8);
+            --border-color: rgba(226, 232, 240, 0.8);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            --card-hover-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            
+            --border-radius: 16px;
+            --grid-gap: 24px;
+            --main-max-width: 1350px;
         }
+
+        body.dark-mode {
+            /* Modo Oscuro */
+            --body-bg: #090e17; 
+            --bg-glow: radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 45%), 
+                       radial-gradient(circle at 100% 0%, rgba(6, 182, 212, 0.15) 0%, transparent 45%);
+            
+            --card-bg: rgba(30, 41, 59, 0.65); 
+            --header-bg: rgba(15, 23, 42, 0.75);
+            --primary-text: #f8fafc;
+            --secondary-text: #94a3b8;
+            --card-title-text: #e2e8f0;
+            
+            --accent-color: #22d3ee; 
+            --accent-gradient: linear-gradient(135deg, #a78bfa, #22d3ee);
+            
+            --iframe-placeholder-bg: rgba(15, 23, 42, 0.6);
+            --border-color: rgba(51, 65, 85, 0.6);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --card-hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--body-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--secondary-text); }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--body-bg);
+            background-image: var(--bg-glow);
+            background-attachment: fixed; 
+            margin: 0;
+            color: var(--primary-text);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* =========================================
+           ENCABEZADO
+           ========================================= */
+        .encabezado {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 40px;
+            margin-bottom: 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: background-color 0.4s ease, border-bottom 0.4s ease;
+        }
+
+        .header-content {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            max-width: var(--main-max-width);
+            margin: 0 auto;
+        }
+
+        .header-left { display: flex; justify-content: flex-start; }
+        .header-center { text-align: center; display: flex; flex-direction: column; }
+        .header-right { display: flex; justify-content: flex-end; align-items: center; gap: 24px; }
+
+        .logo-left, .logo-right {
+            height: 45px; width: auto; object-fit: contain;
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.05));
+        }
+
+        .header-center h1 {
+            margin: 0; font-size: 34px; font-weight: 800; letter-spacing: -0.5px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .header-center p {
+            color: var(--secondary-text); margin: 4px 0 0 0;
+            font-size: 15px; font-weight: 500; letter-spacing: 0.2px;
+        }
+
+        .btn-theme-toggle {
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            color: var(--primary-text); display: flex; align-items: center; justify-content: center;
+            width: 42px; height: 42px; border-radius: 50%; padding: 0;
+            box-shadow: var(--card-shadow); cursor: pointer; backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-theme-toggle:hover { 
+            border-color: var(--accent-color); color: var(--accent-color); 
+            transform: translateY(-2px) scale(1.05); box-shadow: var(--card-hover-shadow);
+        }
+
+        /* =========================================
+           CUADRÍCULA Y TARJETAS
+           ========================================= */
+        .dashboard-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: var(--grid-gap); max-width: var(--main-max-width);
+            margin: 0 auto; padding: 0 20px 60px;
+        }
+
+        .mapa-completo { grid-column: 1 / -1; }
+
+        .tarjeta {
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: var(--border-radius); padding: 28px;
+            box-shadow: var(--card-shadow); display: flex; flex-direction: column;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
+            animation: fadeIn 0.6s ease-out forwards; opacity: 0;
+            position: relative;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-5px); box-shadow: var(--card-hover-shadow);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .tarjeta:nth-child(1) { animation-delay: 0.1s; }
+        .tarjeta:nth-child(2) { animation-delay: 0.2s; }
+        .tarjeta:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 24px; position: relative;
+        }
+
+        .titulo-tarjeta {
+            font-size: 17px; font-weight: 700; color: var(--card-title-text);
+            text-transform: uppercase; letter-spacing: 0.8px;
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        /* Línea debajo del título */
+        .card-header::after {
+            content: ''; position: absolute; bottom: -10px; left: 0;
+            width: 35px; height: 3px; background: var(--accent-gradient); border-radius: 4px;
+        }
+
+        .titulo-icon {
+            font-size: 20px; background-color: var(--iframe-placeholder-bg);
+            padding: 8px; border-radius: 8px; border: 1px solid var(--border-color);
+        }
+
+        /* Botón de expandir (Integrado de tu código) */
+        .btn-expand {
+            background: var(--iframe-placeholder-bg); border: 1px solid var(--border-color);
+            color: var(--secondary-text); border-radius: 8px; width: 36px; height: 36px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .btn-expand:hover {
+            background: var(--accent-color); color: white; border-color: var(--accent-color);
+            transform: scale(1.1); box-shadow: 0 4px 10px rgba(6, 182, 212, 0.3);
+        }
+
+        iframe {
+            width: 100%; border: 1px solid var(--border-color); border-radius: 12px;
+            background-color: var(--iframe-placeholder-bg);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .iframe-alto { height: 550px; }
+        .iframe-medio { height: 420px; }
+
+        /* =========================================
+           MODAL LIGHTBOX (Adaptado a Glassmorphism)
+           ========================================= */
+        body.modal-open { overflow: hidden; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; 
+            background: rgba(15, 23, 42, 0.65); /* Fondo muy oscuro */
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); /* Efecto cristal */
+            z-index: 9999; display: none; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease; padding: 20px;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
         
         .modal-content {
-            overscroll-behavior-y: none;
+            width: 100%; max-width: 1250px; height: 90%; 
+            background: var(--card-bg); /* Toma el color de la tarjeta clara u oscura */
+            border: 1px solid var(--border-color);
+            border-radius: 20px; position: relative; padding: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); 
+            transform: scale(0.95) translateY(20px); 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column;
         }
-    }
-   
-</style>
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        
+        .modal-close {
+            position: absolute; top: -15px; right: -15px; 
+            background: var(--card-bg); color: var(--primary-text);
+            border: 2px solid var(--border-color); border-radius: 50%; 
+            width: 44px; height: 44px; font-size: 1.5rem; font-weight: bold; 
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10; 
+            transition: all 0.3s ease;
+        }
+        .modal-close:hover { 
+            background: var(--accent-color); color: white; border-color: var(--accent-color);
+            transform: rotate(90deg) scale(1.1); 
+        }
+        
+        .modal-body { 
+            flex-grow: 1; width: 100%; height: 100%; overflow: hidden; 
+            border-radius: 12px; -webkit-overflow-scrolling: touch; 
+        }
+        .modal-body iframe, .modal-body img { 
+            width: 100%; height: 100%; border: none; object-fit: contain; 
+            border-radius: 12px; background-color: var(--iframe-placeholder-bg);
+        }
+
+        /* =========================================
+           RESPONSIVE (MÓVILES)
+           ========================================= */
+        @media (max-width: 900px) {
+            .encabezado { padding: 15px 20px; }
+            .header-content { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 15px; }
+            .header-left { justify-content: flex-start; order: 1; }
+            .header-right { justify-content: flex-end; order: 2; gap: 15px;}
+            .header-center { grid-column: 1 / -1; order: 3; text-align: center; margin-top: 5px; }
+            .header-center h1 { font-size: 28px; }
+            .dashboard-grid { grid-template-columns: 1fr; padding: 0 15px 40px; gap: 20px; }
+            .tarjeta { padding: 20px; }
+            .iframe-alto { height: 400px; }
+            .iframe-medio { height: 350px; }
+            .modal-overlay { padding: 10px; }
+            .modal-content { height: 95%; border-radius: 16px; padding: 15px; }
+            .modal-close { top: -10px; right: -10px; width: 38px; height: 38px; }
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <img src="https://i.imgur.com/GXTFolo.png" alt="SAME" class="logo">
-        <img src="https://i.imgur.com/W5Mo4rc.png" alt="ECUES" class="logo">
-    </header>
-
-    <main>
-        <div class="lang-controls-top">
-            <div class="theme-box">
-                <button id="btn-theme" class="btn-theme-toggle" aria-label="Cambiar tema" onclick="toggleTheme()" title="Modo Claro / Oscuro">
-                    <svg id="icon-sun" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                </button>
+    <header class="encabezado">
+        <div class="header-content">
+            <div class="header-left">
+                <img src="https://i.imgur.com/GXTFolo.png" alt="Logo Institución" class="logo-left">
             </div>
-            
-            <div class="lang-box">
-                <button class="btn-lang active" aria-label="Español" onclick="cambiarIdioma('es')" title="Español" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flag_of_Argentina.png/960px-Flag_of_Argentina.png');"></button>
-                <button class="btn-lang" aria-label="English" onclick="cambiarIdioma('en')" title="English" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Flag_of_the_United_States_%28DDD-F-416E_specifications%29.svg/330px-Flag_of_the_United_States_%28DDD-F-416E_specifications%29.svg.png');"></button>
-                <button class="btn-lang" aria-label="Português" onclick="cambiarIdioma('pt')" title="Português" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/250px-Flag_of_Brazil.svg.png');"></button>
+            <div class="header-center">
+                <h1>Personas en Estado de Vulnerabilidad</h1>
+                <p>Analisis Situacional</p>
+            </div>
+            <div class="header-right">
+                <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema" title="Modo Claro / Oscuro">
+                    <svg id="icon-sun" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                <img src="https://i.imgur.com/W5Mo4rc.png" alt="Logo Entidad" class="logo-right">
             </div>
         </div>
-       
-        <section class="hero">
-            <div class="orange-box">
-                <h2 data-i18n="box_title">Informe Mensual</h2>
-                <p id="txt-parrafo" data-i18n="box_desc">Cargando...</p>
-                
-                <div class="box-buttons">
-                    <button id="btn-ver-pdf" class="btn-informe">
-                        <span data-i18n="box_btn">📄 Ver informe</span>
-                    </button>
-                    <a id="lnk-pdf-download" class="btn-descarga" href="#" target="_blank" download aria-label="Descargar PDF" title="Descargar PDF">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                    </a>
+    </header>
+
+    <main class="dashboard-grid">
+        
+        <!-- Tarjeta 1: Mapa -->
+        <div class="tarjeta mapa-completo">
+            <div class="card-header">
+                <div class="titulo-tarjeta">
+                    <span class="titulo-icon">🗺️</span> Mapa Interactivo
                 </div>
+                <!-- Botón Expandir agregado aquí -->
+                <button class="btn-expand" onclick="abrirModal('graficos/mapa.html')" aria-label="Expandir" title="Ver en pantalla completa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                </button>
             </div>
+            <iframe class="iframe-alto" src="graficos/mapa.html" title="Mapa de Incidentes"></iframe>
+        </div>
 
-            <div class="title-section">
-                <h1 data-i18n="main_title">Incidentes de Tránsito</h1>
-                <p class="subtitle" data-i18n="main_subtitle">Monitoreo de incidentes viales atendidos por el equipo SAME / ECUES.</p>
-                
-                <div class="controls-wrapper">
-                    <div class="control-col">
-                        <label class="control-label" data-i18n="select_year" for="sel-anio">Año</label>
-                        <select id="sel-anio" class="control-input" onchange="actualizarOpcionesMeses()" style="width: 120px;"></select>
-                    </div>
-                    <div class="control-col">
-                        <label class="control-label" data-i18n="select_month" for="sel-mes">Mes</label>
-                        <select id="sel-mes" class="control-input" onchange="actualizarPeriodo()" style="width: 170px;"></select>
-                    </div>
-                    <div class="control-col">
-                        <label class="control-label" style="opacity:0; user-select:none;">-</label>
-                        <button class="btn-mapa" onclick="abrirMapa()">
-                            <span data-i18n="btn_mapa">🌐 Abrir Mapa Interactivo</span>
-                        </button>
-                    </div>
-                    <div class="control-col">
-                        <label class="control-label" style="opacity:0; user-select:none;">-</label>
-                        <div class="pico-pill">
-                            <div class="dot"></div>
-                            <div class="lbl" data-i18n="card4_title">Pico de Frecuencia</div>
-                            <div class="pico-iframe-container">
-                                <iframe id="iframe-pico" src="about:blank"></iframe>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Tarjeta 2: Perfil Demográfico -->
+        <div class="tarjeta">
+            <div class="card-header">
+                <div class="titulo-tarjeta">
+                    <span class="titulo-icon">📊</span> Perfil Demográfico
                 </div>
+                <!-- Botón Expandir agregado aquí -->
+                <button class="btn-expand" onclick="abrirModal('graficos/grafico_sexo.html')" aria-label="Expandir" title="Ver en pantalla completa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                </button>
             </div>
-        </section>
+            <iframe class="iframe-medio" src="graficos/grafico_sexo.html" title="Distribución por Sexo"></iframe>
+        </div>
 
-        <section class="grid">
-            <article class="card">
-                <div class="card-header">
-                    <h3 data-i18n="card1_title">Tipos de Incidentes</h3>
-                    <button id="link-tipos" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
+        <!-- Tarjeta 3: Tercer Gráfico -->
+        <div class="tarjeta">
+            <div class="card-header">
+                <div class="titulo-tarjeta">
+                    <span class="titulo-icon">📈</span> Tendencias y Métricas
                 </div>
-                <div class="chart-wrap">
-                    <img id="img-tipos" class="chart-img" src="" alt="Miniatura">
-                    <p id="fallback-tipos" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <h3 data-i18n="card2_title">Vehículo Involucrado</h3>
-                    <button id="link-vehiculos" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
-                </div>
-                <div class="chart-wrap">
-                    <iframe id="iframe-vehiculos" class="chart-iframe" src="" scrolling="no"></iframe>
-                    <p id="fallback-vehiculos" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <h3 data-i18n="card3_title">Zonas de Mayor Impacto</h3>
-                    <button id="link-zonas" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
-                </div>
-                <div class="chart-wrap">
-                    <iframe id="iframe-zonas" class="chart-iframe" src="" scrolling="no"></iframe>
-                    <p id="fallback-zonas" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <h3 data-i18n="card_grilla_title">Grilla de Calor</h3>
-                    <button id="link-grilla" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
-                </div>
-                <div class="chart-wrap">
-                    <iframe id="iframe-grilla" class="chart-iframe" src="" scrolling="no"></iframe>
-                    <p id="fallback-grilla" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <h3 data-i18n="card5_title">Tasa de Traslados</h3>
-                    <button id="link-traslados" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
-                </div>
-                <div class="chart-wrap">
-                    <iframe id="iframe-traslados" class="chart-iframe" src="" scrolling="no"></iframe>
-                    <p id="fallback-traslados" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <h3 data-i18n="card_etario_title">Rango Etario</h3>
-                    <button id="link-etario" class="btn-expand" style="display:none;" aria-label="Expandir" title="Ver en pantalla completa">↗</button>
-                </div>
-                <div class="chart-wrap">
-                    <iframe id="iframe-etario" class="chart-iframe" src="" scrolling="no"></iframe>
-                    <p id="fallback-etario" class="chart-fallback" data-i18n="loading_chart">Cargando gráfico...</p>
-                </div>
-            </article>
-        </section>
+                <!-- Botón Expandir agregado aquí -->
+                <button class="btn-expand" onclick="abrirModal('graficos/tercer_grafico.html')" aria-label="Expandir" title="Ver en pantalla completa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                </button>
+            </div>
+            <iframe class="iframe-medio" src="graficos/tercer_grafico.html" title="Tercer Gráfico"></iframe>
+        </div>
     </main>
 
-    <!-- Modal Lightbox -->
+    <!-- ESTRUCTURA DEL MODAL LIGHTBOX (Agregada de tu código anterior) -->
     <div class="modal-overlay" id="lightbox-modal">
         <div class="modal-content">
             <button class="modal-close" onclick="cerrarModal()" aria-label="Cerrar modal">×</button>
             <div class="modal-body" id="modal-body"></div>
         </div>
     </div>
-    
-    <footer>
-        <div data-i18n="footer_text">&copy; SAME / ECUES - Equipo de Comunicación Unificada de Emergencias Sanitarias</div>
-    </footer>
 
-<script>
-    /* LÓGICA INTACTA - NO MODIFICADA */
-    let idiomaActual = 'es';
-
-    const diccionario = {
-        es: {
-            box_title: "Informe Mensual", box_btn: "📄 Ver informe",
-            main_title: "Incidentes de Tránsito", main_subtitle: "Monitoreo de incidentes viales atendidos por el equipo SAME / ECUES.",
-            select_year: "Año", select_month: "Mes", btn_mapa: "🌐 Abrir Mapa Interactivo",
-            card1_title: "Tipos de Incidentes", card2_title: "Vehículo Involucrado", 
-            card3_title: "Zonas de Mayor Impacto", card4_title: "Pico de Frecuencia", 
-            card5_title: "Tasa de Traslados", 
-            card_grilla_title: "Grilla de Calor", card_etario_title: "Rango Etario",
-            footer_text: "&copy; SAME / ECUES - Equipo de Comunicación Unificada de Emergencias Sanitarias",
-            loading_chart: "Cargando gráfico...", no_chart: "Gráfico no disponible para este periodo.",
-            no_summary: "Resumen no disponible.", lbl_comuna_na: "Comuna N/A"
-        },
-        en: {
-            box_title: "Monthly Report", box_btn: "📄 View report",
-            main_title: "Traffic Incidents", main_subtitle: "Monitoring of traffic incidents attended by the SAME / ECUES team.",
-            select_year: "Year", select_month: "Month", btn_mapa: "🌐 Open Interactive Map",
-            card1_title: "Types of Incidents", card2_title: "Vehicle Involved", 
-            card3_title: "Highest Impact Zones", card4_title: "Peak Frequency", 
-            card5_title: "Transfer Rate", 
-            card_grilla_title: "Heatmap", card_etario_title: "Age Range",
-            footer_text: "&copy; SAME / ECUES - Unified Health Emergency Communication Team",
-            loading_chart: "Loading chart...", no_chart: "Chart not available for this period.",
-            no_summary: "Summary not available.", lbl_comuna_na: "Commune N/A"
-        },
-        pt: {
-            box_title: "Relatório Mensal", box_btn: "📄 Ver relatório",
-            main_title: "Incidentes de Trânsito", main_subtitle: "Monitoramento de incidentes de trânsito atendidos pela equipe SAME / ECUES.",
-            select_year: "Ano", select_month: "Mês", btn_mapa: "🌐 Abrir Mapa Interativo",
-            card1_title: "Tipos de Incidentes", card2_title: "Veículo Envolvido", 
-            card3_title: "Zonas de Maior Impacto", card4_title: "Pico de Frequência", 
-            card5_title: "Taxa de Traslados", 
-            card_grilla_title: "Mapa de Calor", card_etario_title: "Faixa Etária",
-            footer_text: "&copy; SAME / ECUES - Equipe de Comunicação Unificada de Emergências de Saúde",
-            loading_chart: "Carregando gráfico...", no_chart: "Gráfico não disponível para este período.",
-            no_summary: "Resumo não disponível.", lbl_comuna_na: "Comuna N/A"
-        }
-    };
-
-    const nombresMeses = {
-        es: {"01":"Enero", "02":"Febrero", "03":"Marzo", "04":"Abril", "05":"Mayo", "06":"Junio", "07":"Julio", "08":"Agosto", "09":"Septiembre", "10":"Octubre", "11":"Noviembre", "12":"Diciembre"},
-        en: {"01":"January", "02":"February", "03":"March", "04":"April", "05":"May", "06":"June", "07":"July", "08":"August", "09":"September", "10":"October", "11":"November", "12":"December"},
-        pt: {"01":"Janeiro", "02":"Fevereiro", "03":"Março", "04":"Abril", "05":"Maio", "06":"Junho", "07":"Julho", "08":"Agosto", "09":"Setembro", "10":"Outubro", "11":"Novembro", "12":"Dezembro"}
-    };
-
-    function cambiarIdioma(lang) {
-        idiomaActual = lang;
-        document.querySelectorAll('.btn-lang[onclick^="cambiarIdioma"]').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if(diccionario[lang][key]) el.innerHTML = diccionario[lang][key];
-        });
-
-        const selMes = document.getElementById('sel-mes');
-        Array.from(selMes.options).forEach(opt => {
-            opt.innerHTML = nombresMeses[idiomaActual][opt.value];
-        });
-
-        actualizarPeriodo();
-    }
-
-    /* --- SISTEMA MODO CLARO / OSCURO MEJORADO --- */
-    function initTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-mode');
-            actualizarIconoTema(true);
-        } else {
-            actualizarIconoTema(false);
-        }
-    }
-
-    function toggleTheme() {
+    <script>
+        // --- CONTROL DEL TEMA CLARO/OSCURO ---
         const body = document.body;
-        body.classList.toggle('light-mode');
-        const isLight = body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        actualizarIconoTema(isLight);
-    }
-    function actualizarIconoTema(isLight) {
-        document.getElementById('icon-sun').style.display = isLight ? 'none' : 'block';
-        document.getElementById('icon-moon').style.display = isLight ? 'block' : 'none';
-        
-        const metaThemeColor = document.getElementById('meta-theme-color');
-        if(metaThemeColor) {
-            metaThemeColor.setAttribute('content', isLight ? '#ffffff' : '#1E293B');
-        }
-    }
-   
-    const periodos = [
-        "2026-04","2026-03", "2026-02", "2026-01" 
-    ];
+        const themeToggle = document.getElementById('theme-toggle');
+        const iconSun = document.getElementById('icon-sun');
+        const iconMoon = document.getElementById('icon-moon');
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
-    
-    function init() {
-       initTheme(); 
-       const selAnio = document.getElementById('sel-anio');
-       const aniosUnicos = [...new Set(periodos.map(p => p.split('-')[0]))].sort().reverse();
-        
-        aniosUnicos.forEach(a => {
-            const o = document.createElement('option');
-            o.value = a; o.innerHTML = a;
-            selAnio.appendChild(o);
-        });
-
-        actualizarOpcionesMeses();
-    }
-
-    function actualizarOpcionesMeses() {
-        const anioElegido = document.getElementById('sel-anio').value;
-        const selMes = document.getElementById('sel-mes');
-        const mesAnterior = selMes.value; 
-        
-        selMes.innerHTML = ''; 
-        
-        const mesesDelAnio = periodos
-            .filter(p => p.startsWith(anioElegido))
-            .map(p => p.split('-')[1])
-            .sort().reverse();
-
-        mesesDelAnio.forEach(m => {
-            const o = document.createElement('option');
-            o.value = m;
-            o.innerHTML = nombresMeses[idiomaActual][m];
-            selMes.appendChild(o);
-        });
-
-        if (mesAnterior && mesesDelAnio.includes(mesAnterior)) {
-            selMes.value = mesAnterior;
-        }
-
-        actualizarPeriodo();
-    }
-
-    function actualizarPeriodo() {
-        const anio = document.getElementById('sel-anio').value;
-        const mes = document.getElementById('sel-mes').value;
-        const periodoCompuesto = `${anio}-${mes}`;
-        
-        cargarDatosPanel(periodoCompuesto);
-    }
-
-    function abrirMapa() {
-        const anio = document.getElementById('sel-anio').value;
-        const mes = document.getElementById('sel-mes').value;
-        const periodo = `${anio}-${mes}`;
-        
-        const urlMapa = `mapas/${idiomaActual}/${anio}/${periodo}/mapa.html`;
-        window.open(urlMapa, '_blank');
-    }
-
-    async function cargarGraficoHTML(iframeId, fallbackId, linkId, ruta) {
-        const iframeEl = document.getElementById(iframeId);
-        const errEl = document.getElementById(fallbackId);
-        const linkEl = document.getElementById(linkId);
-        
-        iframeEl.style.display = 'none';
-        linkEl.style.display = 'none';
-        errEl.style.display = 'flex';
-
-        try {
-            const res = await fetch(ruta, { method: 'HEAD' });
-            if (!res.ok) throw new Error("Archivo HTML no encontrado");
-            
-            iframeEl.src = ruta;
-            iframeEl.onload = () => {
-                iframeEl.style.display = 'block';
-                linkEl.style.display = 'flex'; 
-                linkEl.onclick = () => abrirModal(ruta, false);
-                errEl.style.display = 'none';
-            };
-        } catch (error) {
-            iframeEl.style.display = 'none';
-            linkEl.style.display = 'none';
-            errEl.style.display = 'flex';
-            errEl.innerText = diccionario[idiomaActual].no_chart;
-        }
-    }
-
-    function cargarImagenYHTML(imgId, fallbackId, linkId, rutaImg, rutaHtml) {
-        const imgEl = document.getElementById(imgId);
-        const errEl = document.getElementById(fallbackId);
-        const linkEl = document.getElementById(linkId);
-
-        imgEl.style.display = 'none';
-        linkEl.style.display = 'none';
-        errEl.style.display = 'flex';
-
-        imgEl.onload = async () => {
-            imgEl.style.display = 'block';
-            errEl.style.display = 'none';
-            try {
-                const res = await fetch(rutaHtml, { method: 'HEAD' });
-                if (res.ok) {
-                    linkEl.style.display = 'flex';
-                    linkEl.onclick = () => abrirModal(rutaHtml, false);
-                }
-            } catch(e) {}
-        };
-        imgEl.onerror = () => {
-            imgEl.style.display = 'none';
-            errEl.style.display = 'flex';
-            errEl.innerText = diccionario[idiomaActual].no_chart;
-        };
-        imgEl.src = rutaImg;
-    }
-
-    /* --- LÓGICA DE MODAL OPTIMIZADA PARA MÓVIL --- */
-    function abrirModal(ruta, esImagen = false) {
-        const modal = document.getElementById('lightbox-modal');
-        const modalBody = document.getElementById('modal-body');
-        
-        document.body.classList.add('modal-open');
-        
-        if (esImagen) {
-            modalBody.innerHTML = `<img src="${ruta}" alt="Gráfico ampliado">`;
-        } else {
-            modalBody.innerHTML = `<iframe src="${ruta}"></iframe>`;
-        }
-        
-        modal.style.display = 'flex';
-        setTimeout(() => modal.classList.add('active'), 10);
-    }
-
-    function cerrarModal() {
-        const modal = document.getElementById('lightbox-modal');
-        modal.classList.remove('active');
-        document.body.classList.remove('modal-open');
-        
-        setTimeout(() => {
-            modal.style.display = 'none';
-            document.getElementById('modal-body').innerHTML = ''; 
-        }, 300);
-    }
-
-    document.getElementById('lightbox-modal').addEventListener('click', function(e) {
-        if(e.target === this) cerrarModal();
-    });
-    
-    async function cargarDatosPanel(mes_anio) {
-        const anio = mes_anio.split("-")[0];
-        const timeStamp = new Date().getTime();
-        const rutaBaseHtml = `graficos/${idiomaActual}/${anio}/${mes_anio}`;   
-        const iframePico = document.getElementById('iframe-pico');
-        iframePico.src = `${rutaBaseHtml}/pico_frecuencia.html?v=${timeStamp}`;
-        
-        cargarImagenYHTML('img-tipos', 'fallback-tipos', 'link-tipos', 
-            `${rutaBaseHtml}/tipo_incidente.png?v=${timeStamp}`, 
-            `${rutaBaseHtml}/tipo_incidente.html?v=${timeStamp}`
-        );
-        
-        cargarGraficoHTML('iframe-vehiculos', 'fallback-vehiculos', 'link-vehiculos', `${rutaBaseHtml}/vehiculo_involucrado.html?v=${timeStamp}`);
-        cargarGraficoHTML('iframe-zonas', 'fallback-zonas', 'link-zonas', `${rutaBaseHtml}/zonas_impacto.html?v=${timeStamp}`);
-        cargarGraficoHTML('iframe-traslados', 'fallback-traslados', 'link-traslados', `${rutaBaseHtml}/tasa_traslados.html?v=${timeStamp}`);
-        cargarGraficoHTML('iframe-grilla', 'fallback-grilla', 'link-grilla', `${rutaBaseHtml}/grilla_calor.html?v=${timeStamp}`);
-        cargarGraficoHTML('iframe-etario', 'fallback-etario', 'link-etario', `${rutaBaseHtml}/rango_etario.html?v=${timeStamp}`);
-
-        const urlFetch = `reportes/${idiomaActual}/${anio}/${mes_anio}.pdf?v=${timeStamp}`; 
-        const urlPdfPuro = `reportes/${idiomaActual}/${anio}/${mes_anio}.pdf`;
-        
-        document.getElementById('lnk-pdf-download').href = urlPdfPuro;
-        document.getElementById('btn-ver-pdf').onclick = () => abrirModal(urlPdfPuro, false);
-        
-        try {
-            const res = await fetch(urlFetch);
-            if (!res.ok) throw new Error("PDF no encontrado");
-            
-            const data = await res.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({data}).promise;
-            let fullText = "";
-            for(let i=1; i<=pdf.numPages; i++){
-                const page = await pdf.getPage(i);
-                const content = await page.getTextContent();
-                fullText += content.items.map(item => item.str).join(" ");
+        function updateIcons() {
+            if (body.classList.contains('dark-mode')) {
+                iconSun.style.display = 'block';
+                iconMoon.style.display = 'none';
+            } else {
+                iconSun.style.display = 'none';
+                iconMoon.style.display = 'block';
             }
-            procesarTextosDinamicos(fullText);
-        } catch (e) { 
-            console.error(e);
-            document.getElementById('txt-parrafo').innerText = diccionario[idiomaActual].no_summary; 
         }
-    }
 
-    function procesarTextosDinamicos(t) {
-        const texto = t.replace(/\s+/g, ' ');
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.add('dark-mode');
+        }
+        updateIcons();
 
-        let textoResumen = diccionario[idiomaActual].no_summary;
-        const matchResumen = texto.match(/((?:En el mes|Durante|In the month|During|No m[êe]s de|Em ).{10,300}?(?:pacientes|atenciones|patients|attentions|attended|atendimentos)\.?)/i) 
-                          || texto.match(/([A-Z][^\.]{10,200}(?:solicitudes|requests|solicitações)[^\.]{5,200}(?:pacientes|patients)\.)/i);
-        if (matchResumen) { textoResumen = matchResumen[1]; }
-        document.getElementById('txt-parrafo').innerText = textoResumen;
-    }
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            updateIcons();
+            localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
 
-    window.onload = init;
-</script>
+        // --- CONTROL DEL MODAL LIGHTBOX (Adaptado de tu código) ---
+        function abrirModal(ruta, esImagen = false) {
+            const modal = document.getElementById('lightbox-modal');
+            const modalBody = document.getElementById('modal-body');
+            
+            // Bloqueamos el scroll de la página de fondo
+            document.body.classList.add('modal-open');
+            
+            if (esImagen) {
+                modalBody.innerHTML = `<img src="${ruta}" alt="Gráfico ampliado">`;
+            } else {
+                // Se carga el iframe
+                modalBody.innerHTML = `<iframe src="${ruta}"></iframe>`;
+            }
+            
+            modal.style.display = 'flex';
+            // Pequeño retardo para que la animación CSS "scale" funcione
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function cerrarModal() {
+            const modal = document.getElementById('lightbox-modal');
+            modal.classList.remove('active');
+            
+            // Liberamos el scroll de la página
+            document.body.classList.remove('modal-open');
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.getElementById('modal-body').innerHTML = ''; // Limpiamos el iframe
+            }, 300); // 300ms coincide con la transición CSS
+        }
+
+        // Cerrar el modal al hacer click fuera de la ventana blanca/oscura (en el fondo borroso)
+        document.getElementById('lightbox-modal').addEventListener('click', function(e) {
+            if(e.target === this) cerrarModal();
+        });
+    </script>
 </body>
 </html>
