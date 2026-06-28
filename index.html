@@ -261,7 +261,7 @@
         .btn-informe { width: 100%; }
         .btn-descarga { width: 100%; border-radius: 12px; }
         .title-section { text-align: center; align-items: center; }
-        .controls-wrapper { flex-direction: column; width: 100%; gap: 12px; }
+        .controls- { flex-direction: column; width: 100%; gap: 12px; }
         .control-col { width: 100%; align-items: center; }
         .control-label { display: none; /* Simplifica UI en móviles */ } 
         .control-input { width: 100% !important; text-align: center; background-position: right 20px center; } 
@@ -341,41 +341,40 @@
                 <p class="subtitle" data-i18n="main_subtitle">Monitoreo de incidentes viales atendidos por el equipo SAME / ECUES.</p>
                 
                 <div class="controls-wrapper">
-                    <div class="control-col">
-                        <label class="control-label" data-i18n="select_year" for="sel-anio">Año</label>
-                        <select id="sel-anio" class="control-input" onchange="actualizarOpcionesMeses()" style="width: 120px;"></select>
-                    </div>
-                    <div class="control-col">
-                        <label class="control-label" data-i18n="select_month" for="sel-mes">Mes</label>
-                        <select id="sel-mes" class="control-input" onchange="actualizarPeriodo()" style="width: 170px;"></select>
-                    </div>
-                    
-                    <div class="control-col">
+    <div class="control-col">
+        <label class="control-label" data-i18n="select_year" for="sel-anio">Año</label>
+        <select id="sel-anio" class="control-input" onchange="actualizarOpcionesMeses()" style="width: 120px;"></select>
+    </div>
+    <div class="control-col">
+        <label class="control-label" data-i18n="select_month" for="sel-mes">Mes</label>
+        <select id="sel-mes" class="control-input" onchange="actualizarPeriodo()" style="width: 170px;"></select>
+    </div>
+    
+    <div class="control-col">
         <label class="control-label" data-i18n="select_semester" for="sel-semestre">Semestre</label>
         <select id="sel-semestre" class="control-input" onchange="cargarPdfSemestral()" style="width: 160px;">
             <option value="S1" data-i18n="sem_1">1º Semestre</option>
             <option value="S2" data-i18n="sem_2">2º Semestre</option>
         </select>
     </div>
+    
+    <div class="control-col">
+        <label class="control-label" style="opacity:0; user-select:none;">-</label>
+        <button class="btn-mapa" onclick="abrirMapa()">
+            <span data-i18n="btn_mapa">🌐 Abrir Mapa Interactivo</span>
+        </button>
     </div>
-                    <div class="control-col">
-                        <label class="control-label" style="opacity:0; user-select:none;">-</label>
-                        <button class="btn-mapa" onclick="abrirMapa()">
-                            <span data-i18n="btn_mapa">🌐 Abrir Mapa Interactivo</span>
-                        </button>
-                    </div>
-                    <div class="control-col">
-                        <label class="control-label" style="opacity:0; user-select:none;">-</label>
-                        <div class="pico-pill">
-                            <div class="dot"></div>
-                            <div class="lbl" data-i18n="card4_title">Pico de Frecuencia</div>
-                            <div class="pico-iframe-container">
-                                <iframe id="iframe-pico" src="about:blank"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="control-col">
+        <label class="control-label" style="opacity:0; user-select:none;">-</label>
+        <div class="pico-pill">
+            <div class="dot"></div>
+            <div class="lbl" data-i18n="card4_title">Pico de Frecuencia</div>
+            <div class="pico-iframe-container">
+                <iframe id="iframe-pico" src="about:blank"></iframe>
             </div>
+        </div>
+    </div>
+</div>
         </section>
 
         <section class="grid">
@@ -474,7 +473,7 @@
             card_grilla_title: "Grilla de Calor", card_etario_title: "Rango Etario",
             footer_text: "&copy; SAME / ECUES - Equipo de Comunicación Unificada de Emergencias Sanitarias",
             loading_chart: "Cargando gráfico...", no_chart: "Gráfico no disponible para este periodo.",
-            no_summary: "Resumen no disponible.", lbl_comuna_na: "Comuna N/A"
+            no_summary: "Resumen no disponible.", lbl_comuna_na: "Comuna N/A",
             select_semester: "Semestre", sem_1: "1º Semestre", sem_2: "2º Semestre",
             box_title_semestral: "Informe Semestral"
         },
@@ -488,7 +487,7 @@
             card_grilla_title: "Heatmap", card_etario_title: "Age Range",
             footer_text: "&copy; SAME / ECUES - Unified Health Emergency Communication Team",
             loading_chart: "Loading chart...", no_chart: "Chart not available for this period.",
-            no_summary: "Summary not available.", lbl_comuna_na: "Commune N/A"
+            no_summary: "Summary not available.", lbl_comuna_na: "Commune N/A",
             select_semester: "Semester", sem_1: "1st Semester", sem_2: "2nd Semester",
             box_title_semestral: "Semiannual Report"
         },
@@ -502,7 +501,7 @@
             card_grilla_title: "Mapa de Calor", card_etario_title: "Faixa Etária",
             footer_text: "&copy; SAME / ECUES - Equipe de Comunicação Unificada de Emergências de Saúde",
             loading_chart: "Carregando gráfico...", no_chart: "Gráfico não disponível para este período.",
-            no_summary: "Resumo não disponível.", lbl_comuna_na: "Comuna N/A"
+            no_summary: "Resumo não disponível.", lbl_comuna_na: "Comuna N/A",
             select_semester: "Semestre", sem_1: "1º Semestre", sem_2: "2º Semestre",
             box_title_semestral: "Relatório Semestral"
         },
