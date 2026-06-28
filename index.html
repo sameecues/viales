@@ -261,7 +261,7 @@
         .btn-informe { width: 100%; }
         .btn-descarga { width: 100%; border-radius: 12px; }
         .title-section { text-align: center; align-items: center; }
-        .controls- { flex-direction: column; width: 100%; gap: 12px; }
+        .controls-wrapper { flex-direction: column; width: 100%; gap: 12px; }
         .control-col { width: 100%; align-items: center; }
         .control-label { display: none; /* Simplifica UI en móviles */ } 
         .control-input { width: 100% !important; text-align: center; background-position: right 20px center; } 
@@ -341,40 +341,41 @@
                 <p class="subtitle" data-i18n="main_subtitle">Monitoreo de incidentes viales atendidos por el equipo SAME / ECUES.</p>
                 
                 <div class="controls-wrapper">
-    <div class="control-col">
-        <label class="control-label" data-i18n="select_year" for="sel-anio">Año</label>
-        <select id="sel-anio" class="control-input" onchange="actualizarOpcionesMeses()" style="width: 120px;"></select>
-    </div>
-    <div class="control-col">
-        <label class="control-label" data-i18n="select_month" for="sel-mes">Mes</label>
-        <select id="sel-mes" class="control-input" onchange="actualizarPeriodo()" style="width: 170px;"></select>
-    </div>
-    
-    <div class="control-col">
+                    <div class="control-col">
+                        <label class="control-label" data-i18n="select_year" for="sel-anio">Año</label>
+                        <select id="sel-anio" class="control-input" onchange="actualizarOpcionesMeses()" style="width: 120px;"></select>
+                    </div>
+                    <div class="control-col">
+                        <label class="control-label" data-i18n="select_month" for="sel-mes">Mes</label>
+                        <select id="sel-mes" class="control-input" onchange="actualizarPeriodo()" style="width: 170px;"></select>
+                    </div>
+                    
+                    <div class="control-col">
         <label class="control-label" data-i18n="select_semester" for="sel-semestre">Semestre</label>
         <select id="sel-semestre" class="control-input" onchange="cargarPdfSemestral()" style="width: 160px;">
             <option value="S1" data-i18n="sem_1">1º Semestre</option>
             <option value="S2" data-i18n="sem_2">2º Semestre</option>
         </select>
     </div>
-    
-    <div class="control-col">
-        <label class="control-label" style="opacity:0; user-select:none;">-</label>
-        <button class="btn-mapa" onclick="abrirMapa()">
-            <span data-i18n="btn_mapa">🌐 Abrir Mapa Interactivo</span>
-        </button>
     </div>
-    <div class="control-col">
-        <label class="control-label" style="opacity:0; user-select:none;">-</label>
-        <div class="pico-pill">
-            <div class="dot"></div>
-            <div class="lbl" data-i18n="card4_title">Pico de Frecuencia</div>
-            <div class="pico-iframe-container">
-                <iframe id="iframe-pico" src="about:blank"></iframe>
+                    <div class="control-col">
+                        <label class="control-label" style="opacity:0; user-select:none;">-</label>
+                        <button class="btn-mapa" onclick="abrirMapa()">
+                            <span data-i18n="btn_mapa">🌐 Abrir Mapa Interactivo</span>
+                        </button>
+                    </div>
+                    <div class="control-col">
+                        <label class="control-label" style="opacity:0; user-select:none;">-</label>
+                        <div class="pico-pill">
+                            <div class="dot"></div>
+                            <div class="lbl" data-i18n="card4_title">Pico de Frecuencia</div>
+                            <div class="pico-iframe-container">
+                                <iframe id="iframe-pico" src="about:blank"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
         </section>
 
         <section class="grid">
@@ -461,6 +462,7 @@
 <script>
     /* LÓGICA INTACTA - NO MODIFICADA */
     let idiomaActual = 'es';
+    let modoVista = 'mes'; // <-- NUEVO: Rastrea si vemos 'mes' o 'semestre'
 
     const diccionario = {
         es: {
@@ -473,7 +475,7 @@
             card_grilla_title: "Grilla de Calor", card_etario_title: "Rango Etario",
             footer_text: "&copy; SAME / ECUES - Equipo de Comunicación Unificada de Emergencias Sanitarias",
             loading_chart: "Cargando gráfico...", no_chart: "Gráfico no disponible para este periodo.",
-            no_summary: "Resumen no disponible.", lbl_comuna_na: "Comuna N/A",
+            no_summary: "Resumen no disponible.", lbl_comuna_na: "Comuna N/A"
             select_semester: "Semestre", sem_1: "1º Semestre", sem_2: "2º Semestre",
             box_title_semestral: "Informe Semestral"
         },
@@ -487,7 +489,7 @@
             card_grilla_title: "Heatmap", card_etario_title: "Age Range",
             footer_text: "&copy; SAME / ECUES - Unified Health Emergency Communication Team",
             loading_chart: "Loading chart...", no_chart: "Chart not available for this period.",
-            no_summary: "Summary not available.", lbl_comuna_na: "Commune N/A",
+            no_summary: "Summary not available.", lbl_comuna_na: "Commune N/A"
             select_semester: "Semester", sem_1: "1st Semester", sem_2: "2nd Semester",
             box_title_semestral: "Semiannual Report"
         },
@@ -501,7 +503,7 @@
             card_grilla_title: "Mapa de Calor", card_etario_title: "Faixa Etária",
             footer_text: "&copy; SAME / ECUES - Equipe de Comunicação Unificada de Emergências de Saúde",
             loading_chart: "Carregando gráfico...", no_chart: "Gráfico não disponível para este período.",
-            no_summary: "Resumo não disponível.", lbl_comuna_na: "Comuna N/A",
+            no_summary: "Resumo não disponível.", lbl_comuna_na: "Comuna N/A"
             select_semester: "Semestre", sem_1: "1º Semestre", sem_2: "2º Semestre",
             box_title_semestral: "Relatório Semestral"
         },
@@ -561,7 +563,7 @@
     }
    
     const periodos = [
-        "2026-05", "2026-04", "2026-03", "2026-02", "2026-01" 
+         "2026-06", "2026-05", "2026-04", "2026-03", "2026-02", "2026-01" 
     ];
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
@@ -607,6 +609,7 @@
     }
 
     function actualizarPeriodo() {
+        modoVista = 'mes'; // <-- NUEVO
     // Restaurar título de la caja a modo mensual
     const tituloHero = document.querySelector('.orange-box h2');
     tituloHero.setAttribute('data-i18n', 'box_title');
@@ -620,13 +623,21 @@
     }
 
     function abrirMapa() {
-        const anio = document.getElementById('sel-anio').value;
+    const anio = document.getElementById('sel-anio').value;
+    let urlMapa = '';
+
+    if (modoVista === 'mes') {
         const mes = document.getElementById('sel-mes').value;
         const periodo = `${anio}-${mes}`;
-        
-        const urlMapa = `mapas/${idiomaActual}/${anio}/${periodo}/mapa.html`;
-        window.open(urlMapa, '_blank');
+        urlMapa = `mapas/${idiomaActual}/${anio}/${periodo}/mapa.html`;
+    } else {
+        const semestre = document.getElementById('sel-semestre').value;
+        // Nueva ruta para el mapa semestral
+        urlMapa = `mapas/${idiomaActual}/${anio}/semestral/${semestre}/mapa.html`;
     }
+    
+    window.open(urlMapa, '_blank');
+}
 
     async function cargarGraficoHTML(iframeId, fallbackId, linkId, ruta) {
         const iframeEl = document.getElementById(iframeId);
@@ -775,16 +786,35 @@
     }
 
 async function cargarPdfSemestral() {
+    modoVista = 'semestre'; // <-- NUEVO
     const anio = document.getElementById('sel-anio').value;
     const semestre = document.getElementById('sel-semestre').value;
     const timeStamp = new Date().getTime();
 
-    // Nueva ruta estructurada para los reportes semestrales
+    // --- NUEVO: CARGAR GRÁFICOS SEMESTRALES ---
+    const rutaBaseHtml = `graficos/${idiomaActual}/${anio}/semestral/${semestre}`;   
+    const iframePico = document.getElementById('iframe-pico');
+    iframePico.src = `${rutaBaseHtml}/pico_frecuencia.html?v=${timeStamp}`;
+    
+    cargarImagenYHTML('img-tipos', 'fallback-tipos', 'link-tipos', 
+        `${rutaBaseHtml}/tipo_incidente.png?v=${timeStamp}`, 
+        `${rutaBaseHtml}/tipo_incidente.html?v=${timeStamp}`
+    );
+    
+    cargarGraficoHTML('iframe-vehiculos', 'fallback-vehiculos', 'link-vehiculos', `${rutaBaseHtml}/vehiculo_involucrado.html?v=${timeStamp}`);
+    cargarGraficoHTML('iframe-zonas', 'fallback-zonas', 'link-zonas', `${rutaBaseHtml}/zonas_impacto.html?v=${timeStamp}`);
+    cargarGraficoHTML('iframe-traslados', 'fallback-traslados', 'link-traslados', `${rutaBaseHtml}/tasa_traslados.html?v=${timeStamp}`);
+    cargarGraficoHTML('iframe-grilla', 'fallback-grilla', 'link-grilla', `${rutaBaseHtml}/grilla_calor.html?v=${timeStamp}`);
+    cargarGraficoHTML('iframe-etario', 'fallback-etario', 'link-etario', `${rutaBaseHtml}/rango_etario.html?v=${timeStamp}`);
+    // ------------------------------------------
+
+    // Nueva ruta estructurada para los reportes semestrales (Lo que ya tenías)
     const urlFetch = `reportes/${idiomaActual}/${anio}/semestral/${semestre}.pdf?v=${timeStamp}`;
     const urlPdfPuro = `reportes/${idiomaActual}/${anio}/semestral/${semestre}.pdf`;
 
+    // Actualizamos la caja naranja (Hero)
     const tituloHero = document.querySelector('.orange-box h2');
-    tituloHero.removeAttribute('data-i18n'); 
+    tituloHero.removeAttribute('data-i18n'); // Quitamos el binding automático para evitar conflictos
     tituloHero.innerText = diccionario[idiomaActual].box_title_semestral + ` (${diccionario[idiomaActual][semestre === 'S1' ? 'sem_1' : 'sem_2']})`;
 
     document.getElementById('lnk-pdf-download').href = urlPdfPuro;
@@ -799,6 +829,7 @@ async function cargarPdfSemestral() {
         const pdf = await pdfjsLib.getDocument({data}).promise;
         let fullText = "";
         
+        // Limitamos la lectura de páginas si el semestral es muy largo por rendimiento
         const paginasALeer = Math.min(pdf.numPages, 3); 
         for(let i=1; i<=paginasALeer; i++){
             const page = await pdf.getPage(i);
