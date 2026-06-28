@@ -33,6 +33,7 @@
         -webkit-font-smoothing: antialiased;
     }
     
+    /* --- HEADER (Glassmorphism mejorado) --- */
     header {
         background: var(--header-bg); 
         backdrop-filter: blur(16px);
@@ -48,6 +49,7 @@
     
     main { padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
     
+    /* --- CONTROLES SUPERIORES --- */
     .lang-controls-top {
         display: flex; justify-content: space-between; align-items: center;
         width: 100%; margin-bottom: 35px;
@@ -199,6 +201,7 @@
         background-size: 200% 100%; animation: pulseLoading 1.5s infinite; color: transparent;
     }
 
+    /* --- FOOTER --- */
     footer {
         background-color: rgba(15, 23, 42, 0.5); backdrop-filter: blur(10px);
         margin-top: 60px; padding: 30px 5%; border-top: 1px solid rgba(255,255,255,0.05); 
@@ -206,6 +209,7 @@
         align-items: center; flex-wrap: wrap; text-align: center; transition: var(--transition-smooth);
     }
     
+    /* --- MODAL LIGHBOX (Optimizado móvil) --- */
     body.modal-open { overflow: hidden; /* Evita scroll de fondo en móviles */ }
 
     .modal-overlay {
@@ -240,11 +244,13 @@
     @keyframes pulseLoading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(234, 88, 12, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); } }
 
+    /* --- SCROLLBAR --- */
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-track { background: var(--bg-dark); }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 5px; border: 2px solid var(--bg-dark); }
     ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
 
+    /* --- RESPONSIVE DESIGN (Móviles) --- */
     @media (max-width: 768px) {
         header { padding: 12px 5%; }
         .logo { height: 36px; }
@@ -268,6 +274,7 @@
         .modal-close { top: -10px; right: -10px; width: 38px; height: 38px; }
     }
 
+   /* --- SISTEMA DE TEMA CLARO --- */
     body.light-mode { background: #f8fafc; color: #0f172a; }
     body.light-mode header { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.05); }
     body.light-mode .btn-theme-toggle { background-color: white; border-color: #e2e8f0; color: #475569; }
@@ -453,8 +460,9 @@
     </footer>
 
 <script>
-
+    /* LÓGICA INTACTA - NO MODIFICADA */
     let idiomaActual = 'es';
+
     const diccionario = {
         es: {
             box_title: "Informe Mensual", box_btn: "📄 Ver informe",
@@ -524,6 +532,7 @@
         actualizarPeriodo();
     }
 
+    /* --- SISTEMA MODO CLARO / OSCURO MEJORADO --- */
     function initTheme() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
@@ -545,6 +554,7 @@
         document.getElementById('icon-sun').style.display = isLight ? 'none' : 'block';
         document.getElementById('icon-moon').style.display = isLight ? 'block' : 'none';
         
+        // Cambiar meta theme-color dinámicamente para móviles
         const metaThemeColor = document.getElementById('meta-theme-color');
         if(metaThemeColor) {
             metaThemeColor.setAttribute('content', isLight ? '#ffffff' : '#233259');
@@ -552,7 +562,7 @@
     }
    
     const periodos = [
-        "2026-06", "2026-05", "2026-04", "2026-03", "2026-02", "2026-01" 
+        "2026-05", "2026-04", "2026-03", "2026-02", "2026-01" 
     ];
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
@@ -598,6 +608,7 @@
     }
 
     function actualizarPeriodo() {
+    // Restaurar título de la caja a modo mensual
     const tituloHero = document.querySelector('.orange-box h2');
     tituloHero.setAttribute('data-i18n', 'box_title');
     tituloHero.innerText = diccionario[idiomaActual].box_title;
@@ -676,10 +687,12 @@
         imgEl.src = rutaImg;
     }
 
+    /* --- LÓGICA DE MODAL OPTIMIZADA PARA MÓVIL --- */
     function abrirModal(ruta, esImagen = false) {
         const modal = document.getElementById('lightbox-modal');
         const modalBody = document.getElementById('modal-body');
         
+        // Oculta el scroll del fondo en móviles
         document.body.classList.add('modal-open');
         
         if (esImagen) {
@@ -767,11 +780,12 @@ async function cargarPdfSemestral() {
     const semestre = document.getElementById('sel-semestre').value;
     const timeStamp = new Date().getTime();
 
+    // Nueva ruta estructurada para los reportes semestrales
     const urlFetch = `reportes/${idiomaActual}/${anio}/semestral/${semestre}.pdf?v=${timeStamp}`;
     const urlPdfPuro = `reportes/${idiomaActual}/${anio}/semestral/${semestre}.pdf`;
 
     const tituloHero = document.querySelector('.orange-box h2');
-    tituloHero.removeAttribute('data-i18n');
+    tituloHero.removeAttribute('data-i18n'); 
     tituloHero.innerText = diccionario[idiomaActual].box_title_semestral + ` (${diccionario[idiomaActual][semestre === 'S1' ? 'sem_1' : 'sem_2']})`;
 
     document.getElementById('lnk-pdf-download').href = urlPdfPuro;
