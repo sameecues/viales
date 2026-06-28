@@ -33,7 +33,6 @@
         -webkit-font-smoothing: antialiased;
     }
     
-    /* --- HEADER (Glassmorphism mejorado) --- */
     header {
         background: var(--header-bg); 
         backdrop-filter: blur(16px);
@@ -49,7 +48,6 @@
     
     main { padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
     
-    /* --- CONTROLES SUPERIORES --- */
     .lang-controls-top {
         display: flex; justify-content: space-between; align-items: center;
         width: 100%; margin-bottom: 35px;
@@ -201,7 +199,6 @@
         background-size: 200% 100%; animation: pulseLoading 1.5s infinite; color: transparent;
     }
 
-    /* --- FOOTER --- */
     footer {
         background-color: rgba(15, 23, 42, 0.5); backdrop-filter: blur(10px);
         margin-top: 60px; padding: 30px 5%; border-top: 1px solid rgba(255,255,255,0.05); 
@@ -209,7 +206,6 @@
         align-items: center; flex-wrap: wrap; text-align: center; transition: var(--transition-smooth);
     }
     
-    /* --- MODAL LIGHBOX (Optimizado móvil) --- */
     body.modal-open { overflow: hidden; /* Evita scroll de fondo en móviles */ }
 
     .modal-overlay {
@@ -244,13 +240,11 @@
     @keyframes pulseLoading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(234, 88, 12, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); } }
 
-    /* --- SCROLLBAR --- */
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-track { background: var(--bg-dark); }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 5px; border: 2px solid var(--bg-dark); }
     ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
 
-    /* --- RESPONSIVE DESIGN (Móviles) --- */
     @media (max-width: 768px) {
         header { padding: 12px 5%; }
         .logo { height: 36px; }
@@ -274,7 +268,6 @@
         .modal-close { top: -10px; right: -10px; width: 38px; height: 38px; }
     }
 
-   /* --- SISTEMA DE TEMA CLARO --- */
     body.light-mode { background: #f8fafc; color: #0f172a; }
     body.light-mode header { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.05); }
     body.light-mode .btn-theme-toggle { background-color: white; border-color: #e2e8f0; color: #475569; }
@@ -349,6 +342,15 @@
                         <label class="control-label" data-i18n="select_month" for="sel-mes">Mes</label>
                         <select id="sel-mes" class="control-input" onchange="actualizarPeriodo()" style="width: 170px;"></select>
                     </div>
+                    
+                    <div class="control-col">
+        <label class="control-label" data-i18n="select_semester" for="sel-semestre">Semestre</label>
+        <select id="sel-semestre" class="control-input" onchange="cargarPdfSemestral()" style="width: 160px;">
+            <option value="S1" data-i18n="sem_1">1º Semestre</option>
+            <option value="S2" data-i18n="sem_2">2º Semestre</option>
+        </select>
+    </div>
+    </div>
                     <div class="control-col">
                         <label class="control-label" style="opacity:0; user-select:none;">-</label>
                         <button class="btn-mapa" onclick="abrirMapa()">
@@ -451,9 +453,8 @@
     </footer>
 
 <script>
-    /* LÓGICA INTACTA - NO MODIFICADA */
-    let idiomaActual = 'es';
 
+    let idiomaActual = 'es';
     const diccionario = {
         es: {
             box_title: "Informe Mensual", box_btn: "📄 Ver informe",
@@ -466,6 +467,8 @@
             footer_text: "&copy; SAME / ECUES - Equipo de Comunicación Unificada de Emergencias Sanitarias",
             loading_chart: "Cargando gráfico...", no_chart: "Gráfico no disponible para este periodo.",
             no_summary: "Resumen no disponible.", lbl_comuna_na: "Comuna N/A"
+            select_semester: "Semestre", sem_1: "1º Semestre", sem_2: "2º Semestre",
+            box_title_semestral: "Informe Semestral"
         },
         en: {
             box_title: "Monthly Report", box_btn: "📄 View report",
@@ -478,6 +481,8 @@
             footer_text: "&copy; SAME / ECUES - Unified Health Emergency Communication Team",
             loading_chart: "Loading chart...", no_chart: "Chart not available for this period.",
             no_summary: "Summary not available.", lbl_comuna_na: "Commune N/A"
+            select_semester: "Semester", sem_1: "1st Semester", sem_2: "2nd Semester",
+            box_title_semestral: "Semiannual Report"
         },
         pt: {
             box_title: "Relatório Mensal", box_btn: "📄 Ver relatório",
@@ -490,7 +495,9 @@
             footer_text: "&copy; SAME / ECUES - Equipe de Comunicação Unificada de Emergências de Saúde",
             loading_chart: "Carregando gráfico...", no_chart: "Gráfico não disponível para este período.",
             no_summary: "Resumo não disponível.", lbl_comuna_na: "Comuna N/A"
-        }
+            select_semester: "Semestre", sem_1: "1º Semestre", sem_2: "2º Semestre",
+            box_title_semestral: "Relatório Semestral"
+        },
     };
 
     const nombresMeses = {
@@ -517,7 +524,6 @@
         actualizarPeriodo();
     }
 
-    /* --- SISTEMA MODO CLARO / OSCURO MEJORADO --- */
     function initTheme() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
@@ -539,7 +545,6 @@
         document.getElementById('icon-sun').style.display = isLight ? 'none' : 'block';
         document.getElementById('icon-moon').style.display = isLight ? 'block' : 'none';
         
-        // Cambiar meta theme-color dinámicamente para móviles
         const metaThemeColor = document.getElementById('meta-theme-color');
         if(metaThemeColor) {
             metaThemeColor.setAttribute('content', isLight ? '#ffffff' : '#233259');
@@ -547,7 +552,7 @@
     }
    
     const periodos = [
-        "2026-04","2026-03", "2026-02", "2026-01" 
+        "2026-06", "2026-05", "2026-04", "2026-03", "2026-02", "2026-01" 
     ];
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
@@ -593,7 +598,11 @@
     }
 
     function actualizarPeriodo() {
-        const anio = document.getElementById('sel-anio').value;
+    const tituloHero = document.querySelector('.orange-box h2');
+    tituloHero.setAttribute('data-i18n', 'box_title');
+    tituloHero.innerText = diccionario[idiomaActual].box_title;
+
+    const anio = document.getElementById('sel-anio').value;
         const mes = document.getElementById('sel-mes').value;
         const periodoCompuesto = `${anio}-${mes}`;
         
@@ -667,12 +676,10 @@
         imgEl.src = rutaImg;
     }
 
-    /* --- LÓGICA DE MODAL OPTIMIZADA PARA MÓVIL --- */
     function abrirModal(ruta, esImagen = false) {
         const modal = document.getElementById('lightbox-modal');
         const modalBody = document.getElementById('modal-body');
         
-        // Oculta el scroll del fondo en móviles
         document.body.classList.add('modal-open');
         
         if (esImagen) {
@@ -754,6 +761,43 @@
         if (matchResumen) { textoResumen = matchResumen[1]; }
         document.getElementById('txt-parrafo').innerText = textoResumen;
     }
+
+async function cargarPdfSemestral() {
+    const anio = document.getElementById('sel-anio').value;
+    const semestre = document.getElementById('sel-semestre').value;
+    const timeStamp = new Date().getTime();
+
+    const urlFetch = `reportes/${idiomaActual}/${anio}/semestral/${semestre}.pdf?v=${timeStamp}`;
+    const urlPdfPuro = `reportes/${idiomaActual}/${anio}/semestral/${semestre}.pdf`;
+
+    const tituloHero = document.querySelector('.orange-box h2');
+    tituloHero.removeAttribute('data-i18n');
+    tituloHero.innerText = diccionario[idiomaActual].box_title_semestral + ` (${diccionario[idiomaActual][semestre === 'S1' ? 'sem_1' : 'sem_2']})`;
+
+    document.getElementById('lnk-pdf-download').href = urlPdfPuro;
+    document.getElementById('btn-ver-pdf').onclick = () => abrirModal(urlPdfPuro, false);
+    document.getElementById('txt-parrafo').innerText = diccionario[idiomaActual].loading_chart;
+
+    try {
+        const res = await fetch(urlFetch);
+        if (!res.ok) throw new Error("PDF semestral no encontrado");
+        
+        const data = await res.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({data}).promise;
+        let fullText = "";
+        
+        const paginasALeer = Math.min(pdf.numPages, 3); 
+        for(let i=1; i<=paginasALeer; i++){
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            fullText += content.items.map(item => item.str).join(" ");
+        }
+        procesarTextosDinamicos(fullText);
+    } catch (e) { 
+        console.error("Error al cargar semestral:", e);
+        document.getElementById('txt-parrafo').innerText = diccionario[idiomaActual].no_summary; 
+    }
+}
 
     window.onload = init;
 </script>
