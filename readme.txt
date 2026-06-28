@@ -45,15 +45,19 @@ Estructura de carpetas.
 │   │
 │   ├── es/
 │   │   └── año/
-│   │       └── año-mes.pdf
-│   │
+│   │       │  └── año-mes.pdf
+│   │       └── semestral/
+│   │                  └── S1.pdf
 │   ├── en/
 │   │   └── año/
-│   │       └── año-mes.pdf
-│   │
+│   │       │  └── año-mes.pdf
+│   │       └── semestral/
+│   │                  └── S1.pdf
 │   └── pt/
-│       └── año/
-│           └── año-mes.pdf
+│   │   └── año/
+│   │       │  └── año-mes.pdf
+│   │       └── semestral/
+│   │                  └── S1.pdf
 └── mapas/
     │
     ├── es/
