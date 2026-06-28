@@ -1,18 +1,17 @@
-📁 Raíz de tu servidor (donde está el index.html)
+📁 index.html
 ┃
 ┣━━ 📁 reportes
 ┃   ┗━━ 📁 es (repite para 'en' y 'pt')
-┃       ┗━━ 📁 2026
-┃           ┣━━ 📄 2026-03.pdf                 <-- (Ruta PDF Mensual)
-┃           ┣━━ 📄 2026-04.pdf                 <-- (Ruta PDF Mensual)
+┃       ┗━━ 📁 año
+┃           ┣━━ 📄 año-mes.pdf                 <-- (Ruta PDF Mensual)
 ┃           ┗━━ 📁 semestral
 ┃               ┣━━ 📄 S1.pdf                  <-- (Ruta PDF Semestral)
 ┃               ┗━━ 📄 S2.pdf                  <-- (Ruta PDF Semestral)
 ┃
 ┣━━ 📁 graficos
-┃   ┗━━ 📁 es
-┃       ┗━━ 📁 2026
-┃           ┣━━ 📁 2026-03                     <-- (Carpeta Mensual)
+┃   ┗━━ 📁 es (repite para 'en' y 'pt')
+┃       ┗━━ 📁 año
+┃           ┣━━ 📁 año-mes                     <-- (Carpeta Mensual)
 ┃           ┃   ┣━━ 📄 grilla_calor.html
 ┃           ┃   ┣━━ 📄 pico_frecuencia.html
 ┃           ┃   ┣━━ 📄 rango_etario.html
@@ -26,18 +25,18 @@
 ┃               ┃   ┣━━ 📄 grilla_calor.html
 ┃               ┃   ┣━━ 📄 pico_frecuencia.html
 ┃               ┃   ┣━━ 📄 rango_etario.html
-┃               ┃   ┗━━ (y el resto de los gráficos correspondientes a S1...)
-┃               ┃
+┃               ┃   ┣━━ 📄 tasa_traslados.html
+┃               ┃   ┣━━ 📄 tipo_incidente.html
+┃               ┃   ┣━━ 🖼️ tipo_incidente.png
+┃               ┃   ┗━━ 📄 vehiculo_involucrado.html
+┃               ┃   
 ┃               ┗━━ 📁 S2
 ┃                   ┗━━ (gráficos de S2...)
 ┃
 ┗━━ 📁 mapas
-    ┗━━ 📁 es
-        ┗━━ 📁 2026
-            ┣━━ 📁 2026-03                     <-- (Carpeta Mensual)
-            ┃   ┗━━ 📄 mapa.html
-            ┃
-            ┣━━ 📁 2026-04                     <-- (Carpeta Mensual)
+    ┗━━ 📁 es (repite para 'en' y 'pt')
+        ┗━━ 📁 año
+            ┣━━ 📁 año-mes                     <-- (Carpeta Mensual)
             ┃   ┗━━ 📄 mapa.html
             ┃
             ┗━━ 📁 semestral
