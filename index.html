@@ -33,7 +33,7 @@
         -webkit-font-smoothing: antialiased;
     }
     
-    /* --- HEADER (Glassmorphism mejorado) --- */
+    /* --- HEADER --- */
     header {
         background: var(--header-bg); 
         backdrop-filter: blur(16px);
@@ -129,6 +129,27 @@
     .control-col { display: flex; flex-direction: column; gap: 8px; }
     .control-label { font-size: 0.75rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
     
+    /* --- TOGGLE TIPO DE REPORTE --- */
+    .tipo-toggle {
+        display: flex; align-items: center;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px; padding: 4px; height: 48px;
+        backdrop-filter: blur(4px);
+    }
+    .btn-toggle {
+        background: transparent; border: none; color: #94a3b8;
+        padding: 0 16px; height: 100%; border-radius: 8px;
+        font-weight: 600; font-family: 'Inter', sans-serif;
+        cursor: pointer; transition: var(--transition-smooth);
+        font-size: 0.9rem;
+    }
+    .btn-toggle:hover { color: white; }
+    .btn-toggle.active {
+        background: var(--primary); color: white;
+        box-shadow: 0 2px 8px rgba(234, 88, 12, 0.4);
+    }
+
     .control-input {
         height: 48px; padding: 0 40px 0 16px; 
         border-radius: 12px; background-color: rgba(255, 255, 255, 0.08); color: white;
@@ -162,7 +183,6 @@
     /* --- TARJETAS (Grid) --- */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
     
-    /* Animación en cascada para las tarjetas */
     .card {
         background: var(--card-bg); border-radius: 24px; padding: 25px; color: var(--text-dark);
         box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1); 
@@ -209,11 +229,11 @@
         align-items: center; flex-wrap: wrap; text-align: center; transition: var(--transition-smooth);
     }
     
-    /* --- MODAL LIGHBOX (Optimizado móvil) --- */
-    body.modal-open { overflow: hidden; /* Evita scroll de fondo en móviles */ }
+    /* --- MODAL LIGHBOX --- */
+    body.modal-open { overflow: hidden; }
 
     .modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; /* dvh: Dynamic Viewport Height (iOS fix) */
+        position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; 
         background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
         z-index: 9999; display: none; justify-content: center; align-items: center;
         opacity: 0; transition: opacity 0.3s ease; padding: 20px;
@@ -250,7 +270,7 @@
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 5px; border: 2px solid var(--bg-dark); }
     ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
 
-    /* --- RESPONSIVE DESIGN (Móviles) --- */
+    /* --- RESPONSIVE DESIGN --- */
     @media (max-width: 768px) {
         header { padding: 12px 5%; }
         .logo { height: 36px; }
@@ -263,8 +283,10 @@
         .title-section { text-align: center; align-items: center; }
         .controls-wrapper { flex-direction: column; width: 100%; gap: 12px; }
         .control-col { width: 100%; align-items: center; }
-        .control-label { display: none; /* Simplifica UI en móviles */ } 
+        .control-label { display: none; } 
         .control-input { width: 100% !important; text-align: center; background-position: right 20px center; } 
+        .tipo-toggle { width: 100%; display: flex; justify-content: center; }
+        .btn-toggle { flex: 1; text-align: center; }
         .btn-mapa { width: 100%; }
         .pico-pill { width: 100%; justify-content: center; }
         .grid { grid-template-columns: 1fr; gap: 20px; }
@@ -291,6 +313,10 @@
     body.light-mode .chart-fallback { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; }
     body.light-mode ::-webkit-scrollbar-track { background: #f8fafc; }
     body.light-mode ::-webkit-scrollbar-thumb { background: #cbd5e1; border-color: #f8fafc; }
+    body.light-mode .tipo-toggle { background-color: #ffffff; border-color: #cbd5e1; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+    body.light-mode .btn-toggle { color: #64748b; }
+    body.light-mode .btn-toggle:hover { color: #1e293b; }
+    body.light-mode .btn-toggle.active { background: var(--primary); color: white; }
 
 </style>
 </head>
@@ -342,26 +368,45 @@
                 
                 <div class="controls-wrapper">
                     <div class="control-col">
-                        <label class="control-label" data-i18n="select_year" for="sel-anio">Año</label>
-                        <select id="sel-anio" class="control-input" onchange="actualizarOpcionesMeses()" style="width: 120px;"></select>
+                        <label class="control-label" data-i18n="report_type">Tipo</label>
+                        <div class="tipo-toggle">
+                            <button id="btn-modo-mes" class="btn-toggle active" onclick="setModoVista('mes')" data-i18n="mode_month">Mensual</button>
+                            <button id="btn-modo-sem" class="btn-toggle" onclick="setModoVista('semestre')" data-i18n="mode_semester">Semestral</button>
+                        </div>
                     </div>
+
                     <div class="control-col">
+                        <label class="control-label" data-i18n="select_year" for="sel-anio">Año</label>
+                        <select id="sel-anio" class="control-input" onchange="recargarDatosActuales()" style="width: 120px;"></select>
+                    </div>
+
+                    <div class="control-col" id="col-mes">
                         <label class="control-label" data-i18n="select_month" for="sel-mes">Mes</label>
                         <select id="sel-mes" class="control-input" onchange="actualizarPeriodo()" style="width: 170px;"></select>
                     </div>
+                    
+                    <div class="control-col" id="col-semestre" style="display: none;">
+                        <label class="control-label" data-i18n="select_semester" for="sel-semestre">Semestre</label>
+                        <select id="sel-semestre" class="control-input" onchange="cargarPdfSemestral()" style="width: 160px;">
+                            <option value="S1" data-i18n="sem_1">1º Semestre</option>
+                            <option value="S2" data-i18n="sem_2">2º Semestre</option>
+                        </select>
+                    </div>
+                    
                     <div class="control-col">
                         <label class="control-label" style="opacity:0; user-select:none;">-</label>
                         <button class="btn-mapa" onclick="abrirMapa()">
                             <span data-i18n="btn_mapa">🌐 Abrir Mapa Interactivo</span>
                         </button>
                     </div>
+
                     <div class="control-col">
                         <label class="control-label" style="opacity:0; user-select:none;">-</label>
                         <div class="pico-pill">
                             <div class="dot"></div>
                             <div class="lbl" data-i18n="card4_title">Pico de Frecuencia</div>
                             <div class="pico-iframe-container">
-                                <iframe id="iframe-pico" src="about:blank"></iframe>
+                                <iframe id="iframe-pico" src="about:blank" style="overflow: hidden;"></iframe>
                             </div>
                         </div>
                     </div>
@@ -438,7 +483,6 @@
         </section>
     </main>
 
-    <!-- Modal Lightbox -->
     <div class="modal-overlay" id="lightbox-modal">
         <div class="modal-content">
             <button class="modal-close" onclick="cerrarModal()" aria-label="Cerrar modal">×</button>
@@ -451,11 +495,12 @@
     </footer>
 
 <script>
-    /* LÓGICA INTACTA - NO MODIFICADA */
     let idiomaActual = 'es';
+    let modoVista = 'mes'; 
 
     const diccionario = {
         es: {
+            report_type: "Tipo", mode_month: "Mensual", mode_semester: "Semestral",
             box_title: "Informe Mensual", box_btn: "📄 Ver informe",
             main_title: "Incidentes de Tránsito", main_subtitle: "Monitoreo de incidentes viales atendidos por el equipo SAME / ECUES.",
             select_year: "Año", select_month: "Mes", btn_mapa: "🌐 Abrir Mapa Interactivo",
@@ -465,9 +510,12 @@
             card_grilla_title: "Grilla de Calor", card_etario_title: "Rango Etario",
             footer_text: "&copy; SAME / ECUES - Equipo de Comunicación Unificada de Emergencias Sanitarias",
             loading_chart: "Cargando gráfico...", no_chart: "Gráfico no disponible para este periodo.",
-            no_summary: "Resumen no disponible.", lbl_comuna_na: "Comuna N/A"
+            no_summary: "Resumen no disponible.", lbl_comuna_na: "Comuna N/A",
+            select_semester: "Semestre", sem_1: "1º Semestre", sem_2: "2º Semestre",
+            box_title_semestral: "Informe Semestral"
         },
         en: {
+            report_type: "Type", mode_month: "Monthly", mode_semester: "Semiannual",
             box_title: "Monthly Report", box_btn: "📄 View report",
             main_title: "Traffic Incidents", main_subtitle: "Monitoring of traffic incidents attended by the SAME / ECUES team.",
             select_year: "Year", select_month: "Month", btn_mapa: "🌐 Open Interactive Map",
@@ -477,9 +525,12 @@
             card_grilla_title: "Heatmap", card_etario_title: "Age Range",
             footer_text: "&copy; SAME / ECUES - Unified Health Emergency Communication Team",
             loading_chart: "Loading chart...", no_chart: "Chart not available for this period.",
-            no_summary: "Summary not available.", lbl_comuna_na: "Commune N/A"
+            no_summary: "Summary not available.", lbl_comuna_na: "Commune N/A",
+            select_semester: "Semester", sem_1: "1st Semester", sem_2: "2nd Semester",
+            box_title_semestral: "Semiannual Report"
         },
         pt: {
+            report_type: "Tipo", mode_month: "Mensal", mode_semester: "Semestral",
             box_title: "Relatório Mensal", box_btn: "📄 Ver relatório",
             main_title: "Incidentes de Trânsito", main_subtitle: "Monitoramento de incidentes de trânsito atendidos pela equipe SAME / ECUES.",
             select_year: "Ano", select_month: "Mês", btn_mapa: "🌐 Abrir Mapa Interativo",
@@ -489,7 +540,9 @@
             card_grilla_title: "Mapa de Calor", card_etario_title: "Faixa Etária",
             footer_text: "&copy; SAME / ECUES - Equipe de Comunicação Unificada de Emergências de Saúde",
             loading_chart: "Carregando gráfico...", no_chart: "Gráfico não disponível para este período.",
-            no_summary: "Resumo não disponível.", lbl_comuna_na: "Comuna N/A"
+            no_summary: "Resumo não disponível.", lbl_comuna_na: "Comuna N/A",
+            select_semester: "Semestre", sem_1: "1º Semestre", sem_2: "2º Semestre",
+            box_title_semestral: "Relatório Semestral"
         }
     };
 
@@ -514,10 +567,10 @@
             opt.innerHTML = nombresMeses[idiomaActual][opt.value];
         });
 
-        actualizarPeriodo();
+        recargarDatosActuales();
     }
 
-    /* --- SISTEMA MODO CLARO / OSCURO MEJORADO --- */
+    /* --- SISTEMA MODO CLARO / OSCURO --- */
     function initTheme() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
@@ -535,11 +588,11 @@
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
         actualizarIconoTema(isLight);
     }
+    
     function actualizarIconoTema(isLight) {
         document.getElementById('icon-sun').style.display = isLight ? 'none' : 'block';
         document.getElementById('icon-moon').style.display = isLight ? 'block' : 'none';
         
-        // Cambiar meta theme-color dinámicamente para móviles
         const metaThemeColor = document.getElementById('meta-theme-color');
         if(metaThemeColor) {
             metaThemeColor.setAttribute('content', isLight ? '#ffffff' : '#233259');
@@ -547,7 +600,9 @@
     }
    
     const periodos = [
-        "2026-05", "2026-04", "2026-03", "2026-02", "2026-01" 
+         "2026-06", "2026-05", "2026-04", "2026-03", "2026-02", "2026-01",
+         "2025-12", "2025-11", "2025-10", "2025-09", "2025-08", "2025-07",
+         "2025-06", "2025-05", "2025-04", "2025-03", "2025-02", "2025-01"
     ];
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
@@ -556,14 +611,48 @@
        initTheme(); 
        const selAnio = document.getElementById('sel-anio');
        const aniosUnicos = [...new Set(periodos.map(p => p.split('-')[0]))].sort().reverse();
-        
-        aniosUnicos.forEach(a => {
-            const o = document.createElement('option');
-            o.value = a; o.innerHTML = a;
-            selAnio.appendChild(o);
-        });
+       
+       aniosUnicos.forEach(a => {
+           const o = document.createElement('option');
+           o.value = a; o.innerHTML = a;
+           selAnio.appendChild(o);
+       });
 
+       actualizarOpcionesMeses();
+    }
+
+    // --- NUEVAS FUNCIONES DE CONTROL DE VISTA ---
+    function setModoVista(modo) {
+        modoVista = modo;
+        
+        const btnMes = document.getElementById('btn-modo-mes');
+        const btnSem = document.getElementById('btn-modo-sem');
+        const colMes = document.getElementById('col-mes');
+        const colSemestre = document.getElementById('col-semestre');
+
+        if (modo === 'mes') {
+            btnMes.classList.add('active');
+            btnSem.classList.remove('active');
+            colMes.style.display = 'flex';
+            colSemestre.style.display = 'none';
+            actualizarPeriodo(); 
+        } else {
+            btnSem.classList.add('active');
+            btnMes.classList.remove('active');
+            colSemestre.style.display = 'flex';
+            colMes.style.display = 'none';
+            cargarPdfSemestral(); 
+        }
+    }
+
+    function recargarDatosActuales() {
         actualizarOpcionesMeses();
+        
+        if (modoVista === 'mes') {
+            actualizarPeriodo();
+        } else {
+            cargarPdfSemestral();
+        }
     }
 
     function actualizarOpcionesMeses() {
@@ -588,11 +677,14 @@
         if (mesAnterior && mesesDelAnio.includes(mesAnterior)) {
             selMes.value = mesAnterior;
         }
-
-        actualizarPeriodo();
     }
 
     function actualizarPeriodo() {
+        modoVista = 'mes'; 
+        const tituloHero = document.querySelector('.orange-box h2');
+        tituloHero.setAttribute('data-i18n', 'box_title');
+        tituloHero.innerText = diccionario[idiomaActual].box_title;
+
         const anio = document.getElementById('sel-anio').value;
         const mes = document.getElementById('sel-mes').value;
         const periodoCompuesto = `${anio}-${mes}`;
@@ -602,10 +694,17 @@
 
     function abrirMapa() {
         const anio = document.getElementById('sel-anio').value;
-        const mes = document.getElementById('sel-mes').value;
-        const periodo = `${anio}-${mes}`;
+        let urlMapa = '';
+
+        if (modoVista === 'mes') {
+            const mes = document.getElementById('sel-mes').value;
+            const periodo = `${anio}-${mes}`;
+            urlMapa = `mapas/${idiomaActual}/${anio}/${periodo}/mapa.html`;
+        } else {
+            const semestre = document.getElementById('sel-semestre').value;
+            urlMapa = `mapas/${idiomaActual}/${anio}/semestral/${semestre}/mapa.html`;
+        }
         
-        const urlMapa = `mapas/${idiomaActual}/${anio}/${periodo}/mapa.html`;
         window.open(urlMapa, '_blank');
     }
 
@@ -667,12 +766,11 @@
         imgEl.src = rutaImg;
     }
 
-    /* --- LÓGICA DE MODAL OPTIMIZADA PARA MÓVIL --- */
+    /* --- LÓGICA DE MODAL --- */
     function abrirModal(ruta, esImagen = false) {
         const modal = document.getElementById('lightbox-modal');
         const modalBody = document.getElementById('modal-body');
         
-        // Oculta el scroll del fondo en móviles
         document.body.classList.add('modal-open');
         
         if (esImagen) {
@@ -689,7 +787,6 @@
         const modal = document.getElementById('lightbox-modal');
         modal.classList.remove('active');
         
-        // Restaura el scroll del fondo
         document.body.classList.remove('modal-open');
         
         setTimeout(() => {
@@ -706,6 +803,7 @@
         const anio = mes_anio.split("-")[0];
         const timeStamp = new Date().getTime();
         const rutaBaseHtml = `graficos/${idiomaActual}/${anio}/${mes_anio}`;   
+        
         const iframePico = document.getElementById('iframe-pico');
         iframePico.src = `${rutaBaseHtml}/pico_frecuencia.html?v=${timeStamp}`;
         
@@ -753,6 +851,59 @@
                           || texto.match(/([A-Z][^\.]{10,200}(?:solicitudes|requests|solicitações)[^\.]{5,200}(?:pacientes|patients)\.)/i);
         if (matchResumen) { textoResumen = matchResumen[1]; }
         document.getElementById('txt-parrafo').innerText = textoResumen;
+    }
+
+    async function cargarPdfSemestral() {
+        modoVista = 'semestre'; 
+        const anio = document.getElementById('sel-anio').value;
+        const semestre = document.getElementById('sel-semestre').value;
+        const timeStamp = new Date().getTime();
+
+        const rutaBaseHtml = `graficos/${idiomaActual}/${anio}/semestral/${semestre}`;   
+        const iframePico = document.getElementById('iframe-pico');
+        iframePico.src = `${rutaBaseHtml}/pico_frecuencia.html?v=${timeStamp}`;
+        
+        cargarImagenYHTML('img-tipos', 'fallback-tipos', 'link-tipos', 
+            `${rutaBaseHtml}/tipo_incidente.png?v=${timeStamp}`, 
+            `${rutaBaseHtml}/tipo_incidente.html?v=${timeStamp}`
+        );
+        
+        cargarGraficoHTML('iframe-vehiculos', 'fallback-vehiculos', 'link-vehiculos', `${rutaBaseHtml}/vehiculo_involucrado.html?v=${timeStamp}`);
+        cargarGraficoHTML('iframe-zonas', 'fallback-zonas', 'link-zonas', `${rutaBaseHtml}/zonas_impacto.html?v=${timeStamp}`);
+        cargarGraficoHTML('iframe-traslados', 'fallback-traslados', 'link-traslados', `${rutaBaseHtml}/tasa_traslados.html?v=${timeStamp}`);
+        cargarGraficoHTML('iframe-grilla', 'fallback-grilla', 'link-grilla', `${rutaBaseHtml}/grilla_calor.html?v=${timeStamp}`);
+        cargarGraficoHTML('iframe-etario', 'fallback-etario', 'link-etario', `${rutaBaseHtml}/rango_etario.html?v=${timeStamp}`);
+
+        const urlFetch = `reportes/${idiomaActual}/${anio}/semestral/${semestre}.pdf?v=${timeStamp}`;
+        const urlPdfPuro = `reportes/${idiomaActual}/${anio}/semestral/${semestre}.pdf`;
+
+        const tituloHero = document.querySelector('.orange-box h2');
+        tituloHero.removeAttribute('data-i18n'); 
+        tituloHero.innerText = diccionario[idiomaActual].box_title_semestral + ` (${diccionario[idiomaActual][semestre === 'S1' ? 'sem_1' : 'sem_2']})`;
+
+        document.getElementById('lnk-pdf-download').href = urlPdfPuro;
+        document.getElementById('btn-ver-pdf').onclick = () => abrirModal(urlPdfPuro, false);
+        document.getElementById('txt-parrafo').innerText = diccionario[idiomaActual].loading_chart;
+
+        try {
+            const res = await fetch(urlFetch);
+            if (!res.ok) throw new Error("PDF semestral no encontrado");
+            
+            const data = await res.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({data}).promise;
+            let fullText = "";
+            
+            const paginasALeer = Math.min(pdf.numPages, 3); 
+            for(let i=1; i<=paginasALeer; i++){
+                const page = await pdf.getPage(i);
+                const content = await page.getTextContent();
+                fullText += content.items.map(item => item.str).join(" ");
+            }
+            procesarTextosDinamicos(fullText);
+        } catch (e) { 
+            console.error("Error al cargar semestral:", e);
+            document.getElementById('txt-parrafo').innerText = diccionario[idiomaActual].no_summary; 
+        }
     }
 
     window.onload = init;
