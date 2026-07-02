@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grilla de Calor - SAME / ECUES</title>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <style>
+        html, body { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #ffffff; overflow: hidden; }
+        #heatmap { width: 100%; height: 100vh; }
+    </style>
+</head>
+<body>
+
+    <div id="heatmap"></div>
+
+<script>
+    const rawData = [
+{"Dia":"segunda","Hora":0,"Incidentes":40,"Porcentaje":0.34},
+  {"Dia":"segunda","Hora":1,"Incidentes":20,"Porcentaje":0.17},
+  {"Dia":"segunda","Hora":2,"Incidentes":25,"Porcentaje":0.21},
+  {"Dia":"segunda","Hora":3,"Incidentes":14,"Porcentaje":0.12},
+  {"Dia":"segunda","Hora":4,"Incidentes":9,"Porcentaje":0.08},
+  {"Dia":"segunda","Hora":5,"Incidentes":19,"Porcentaje":0.16},
+  {"Dia":"segunda","Hora":6,"Incidentes":44,"Porcentaje":0.38},
+  {"Dia":"segunda","Hora":7,"Incidentes":65,"Porcentaje":0.55},
+  {"Dia":"segunda","Hora":8,"Incidentes":79,"Porcentaje":0.67},
+  {"Dia":"segunda","Hora":9,"Incidentes":87,"Porcentaje":0.74},
+  {"Dia":"segunda","Hora":10,"Incidentes":72,"Porcentaje":0.61},
+  {"Dia":"segunda","Hora":11,"Incidentes":85,"Porcentaje":0.73},
+  {"Dia":"segunda","Hora":12,"Incidentes":99,"Porcentaje":0.85},
+  {"Dia":"segunda","Hora":13,"Incidentes":95,"Porcentaje":0.81},
+  {"Dia":"segunda","Hora":14,"Incidentes":107,"Porcentaje":0.91},
+  {"Dia":"segunda","Hora":15,"Incidentes":117,"Porcentaje":1.00},
+  {"Dia":"segunda","Hora":16,"Incidentes":115,"Porcentaje":0.98},
+  {"Dia":"segunda","Hora":17,"Incidentes":144,"Porcentaje":1.23},
+  {"Dia":"segunda","Hora":18,"Incidentes":84,"Porcentaje":0.72},
+  {"Dia":"segunda","Hora":19,"Incidentes":93,"Porcentaje":0.79},
+  {"Dia":"segunda","Hora":20,"Incidentes":66,"Porcentaje":0.56},
+  {"Dia":"segunda","Hora":21,"Incidentes":55,"Porcentaje":0.47},
+  {"Dia":"segunda","Hora":22,"Incidentes":54,"Porcentaje":0.46},
+  {"Dia":"segunda","Hora":23,"Incidentes":36,"Porcentaje":0.31},
+  {"Dia":"terça","Hora":0,"Incidentes":29,"Porcentaje":0.25},
+  {"Dia":"terça","Hora":1,"Incidentes":9,"Porcentaje":0.08},
+  {"Dia":"terça","Hora":2,"Incidentes":8,"Porcentaje":0.07},
+  {"Dia":"terça","Hora":3,"Incidentes":8,"Porcentaje":0.07},
+  {"Dia":"terça","Hora":4,"Incidentes":5,"Porcentaje":0.04},
+  {"Dia":"terça","Hora":5,"Incidentes":19,"Porcentaje":0.16},
+  {"Dia":"terça","Hora":6,"Incidentes":35,"Porcentaje":0.30},
+  {"Dia":"terça","Hora":7,"Incidentes":58,"Porcentaje":0.50},
+  {"Dia":"terça","Hora":8,"Incidentes":94,"Porcentaje":0.80},
+  {"Dia":"terça","Hora":9,"Incidentes":91,"Porcentaje":0.78},
+  {"Dia":"terça","Hora":10,"Incidentes":88,"Porcentaje":0.75},
+  {"Dia":"terça","Hora":11,"Incidentes":89,"Porcentaje":0.76},
+  {"Dia":"terça","Hora":12,"Incidentes":121,"Porcentaje":1.03},
+  {"Dia":"terça","Hora":13,"Incidentes":130,"Porcentaje":1.11},
+  {"Dia":"terça","Hora":14,"Incidentes":108,"Porcentaje":0.92},
+  {"Dia":"terça","Hora":15,"Incidentes":123,"Porcentaje":1.05},
+  {"Dia":"terça","Hora":16,"Incidentes":145,"Porcentaje":1.24},
+  {"Dia":"terça","Hora":17,"Incidentes":144,"Porcentaje":1.23},
+  {"Dia":"terça","Hora":18,"Incidentes":137,"Porcentaje":1.17},
+  {"Dia":"terça","Hora":19,"Incidentes":102,"Porcentaje":0.87},
+  {"Dia":"terça","Hora":20,"Incidentes":75,"Porcentaje":0.64},
+  {"Dia":"terça","Hora":21,"Incidentes":63,"Porcentaje":0.54},
+  {"Dia":"terça","Hora":22,"Incidentes":51,"Porcentaje":0.44},
+  {"Dia":"terça","Hora":23,"Incidentes":39,"Porcentaje":0.33},
+  {"Dia":"quarta","Hora":0,"Incidentes":29,"Porcentaje":0.25},
+  {"Dia":"quarta","Hora":1,"Incidentes":20,"Porcentaje":0.17},
+  {"Dia":"quarta","Hora":2,"Incidentes":13,"Porcentaje":0.11},
+  {"Dia":"quarta","Hora":3,"Incidentes":8,"Porcentaje":0.07},
+  {"Dia":"quarta","Hora":4,"Incidentes":11,"Porcentaje":0.09},
+  {"Dia":"quarta","Hora":5,"Incidentes":20,"Porcentaje":0.17},
+  {"Dia":"quarta","Hora":6,"Incidentes":42,"Porcentaje":0.36},
+  {"Dia":"quarta","Hora":7,"Incidentes":82,"Porcentaje":0.70},
+  {"Dia":"quarta","Hora":8,"Incidentes":85,"Porcentaje":0.73},
+  {"Dia":"quarta","Hora":9,"Incidentes":82,"Porcentaje":0.70},
+  {"Dia":"quarta","Hora":10,"Incidentes":89,"Porcentaje":0.76},
+  {"Dia":"quarta","Hora":11,"Incidentes":92,"Porcentaje":0.79},
+  {"Dia":"quarta","Hora":12,"Incidentes":133,"Porcentaje":1.14},
+  {"Dia":"quarta","Hora":13,"Incidentes":144,"Porcentaje":1.23},
+  {"Dia":"quarta","Hora":14,"Incidentes":119,"Porcentaje":1.02},
+  {"Dia":"quarta","Hora":15,"Incidentes":105,"Porcentaje":0.90},
+  {"Dia":"quarta","Hora":16,"Incidentes":139,"Porcentaje":1.19},
+  {"Dia":"quarta","Hora":17,"Incidentes":163,"Porcentaje":1.39},
+  {"Dia":"quarta","Hora":18,"Incidentes":119,"Porcentaje":1.02},
+  {"Dia":"quarta","Hora":19,"Incidentes":90,"Porcentaje":0.77},
+  {"Dia":"quarta","Hora":20,"Incidentes":74,"Porcentaje":0.63},
+  {"Dia":"quarta","Hora":21,"Incidentes":63,"Porcentaje":0.54},
+  {"Dia":"quarta","Hora":22,"Incidentes":49,"Porcentaje":0.42},
+  {"Dia":"quarta","Hora":23,"Incidentes":38,"Porcentaje":0.32},
+  {"Dia":"quinta","Hora":0,"Incidentes":27,"Porcentaje":0.23},
+  {"Dia":"quinta","Hora":1,"Incidentes":18,"Porcentaje":0.15},
+  {"Dia":"quinta","Hora":2,"Incidentes":16,"Porcentaje":0.14},
+  {"Dia":"quinta","Hora":3,"Incidentes":6,"Porcentaje":0.05},
+  {"Dia":"quinta","Hora":4,"Incidentes":8,"Porcentaje":0.07},
+  {"Dia":"quinta","Hora":5,"Incidentes":23,"Porcentaje":0.20},
+  {"Dia":"quinta","Hora":6,"Incidentes":32,"Porcentaje":0.27},
+  {"Dia":"quinta","Hora":7,"Incidentes":78,"Porcentaje":0.67},
+  {"Dia":"quinta","Hora":8,"Incidentes":113,"Porcentaje":0.96},
+  {"Dia":"quinta","Hora":9,"Incidentes":114,"Porcentaje":0.97},
+  {"Dia":"quinta","Hora":10,"Incidentes":69,"Porcentaje":0.59},
+  {"Dia":"quinta","Hora":11,"Incidentes":104,"Porcentaje":0.89},
+  {"Dia":"quinta","Hora":12,"Incidentes":108,"Porcentaje":0.92},
+  {"Dia":"quinta","Hora":13,"Incidentes":107,"Porcentaje":0.91},
+  {"Dia":"quinta","Hora":14,"Incidentes":114,"Porcentaje":0.97},
+  {"Dia":"quinta","Hora":15,"Incidentes":120,"Porcentaje":1.02},
+  {"Dia":"quinta","Hora":16,"Incidentes":146,"Porcentaje":1.25},
+  {"Dia":"quinta","Hora":17,"Incidentes":166,"Porcentaje":1.42},
+  {"Dia":"quinta","Hora":18,"Incidentes":134,"Porcentaje":1.14},
+  {"Dia":"quinta","Hora":19,"Incidentes":82,"Porcentaje":0.70},
+  {"Dia":"quinta","Hora":20,"Incidentes":121,"Porcentaje":1.03},
+  {"Dia":"quinta","Hora":21,"Incidentes":71,"Porcentaje":0.61},
+  {"Dia":"quinta","Hora":22,"Incidentes":63,"Porcentaje":0.54},
+  {"Dia":"quinta","Hora":23,"Incidentes":49,"Porcentaje":0.42},
+  {"Dia":"sexta","Hora":0,"Incidentes":40,"Porcentaje":0.34},
+  {"Dia":"sexta","Hora":1,"Incidentes":25,"Porcentaje":0.21},
+  {"Dia":"sexta","Hora":2,"Incidentes":16,"Porcentaje":0.14},
+  {"Dia":"sexta","Hora":3,"Incidentes":8,"Porcentaje":0.07},
+  {"Dia":"sexta","Hora":4,"Incidentes":14,"Porcentaje":0.12},
+  {"Dia":"sexta","Hora":5,"Incidentes":28,"Porcentaje":0.24},
+  {"Dia":"sexta","Hora":6,"Incidentes":48,"Porcentaje":0.41},
+  {"Dia":"sexta","Hora":7,"Incidentes":67,"Porcentaje":0.57},
+  {"Dia":"sexta","Hora":8,"Incidentes":104,"Porcentaje":0.89},
+  {"Dia":"sexta","Hora":9,"Incidentes":74,"Porcentaje":0.63},
+  {"Dia":"sexta","Hora":10,"Incidentes":69,"Porcentaje":0.59},
+  {"Dia":"sexta","Hora":11,"Incidentes":100,"Porcentaje":0.85},
+  {"Dia":"sexta","Hora":12,"Incidentes":129,"Porcentaje":1.10},
+  {"Dia":"sexta","Hora":13,"Incidentes":140,"Porcentaje":1.20},
+  {"Dia":"sexta","Hora":14,"Incidentes":155,"Porcentaje":1.32},
+  {"Dia":"sexta","Hora":15,"Incidentes":150,"Porcentaje":1.28},
+  {"Dia":"sexta","Hora":16,"Incidentes":140,"Porcentaje":1.20},
+  {"Dia":"sexta","Hora":17,"Incidentes":136,"Porcentaje":1.16},
+  {"Dia":"sexta","Hora":18,"Incidentes":117,"Porcentaje":1.00},
+  {"Dia":"sexta","Hora":19,"Incidentes":87,"Porcentaje":0.74},
+  {"Dia":"sexta","Hora":20,"Incidentes":107,"Porcentaje":0.91},
+  {"Dia":"sexta","Hora":21,"Incidentes":91,"Porcentaje":0.78},
+  {"Dia":"sexta","Hora":22,"Incidentes":67,"Porcentaje":0.57},
+  {"Dia":"sexta","Hora":23,"Incidentes":61,"Porcentaje":0.52},
+  {"Dia":"sábado","Hora":0,"Incidentes":44,"Porcentaje":0.38},
+  {"Dia":"sábado","Hora":1,"Incidentes":43,"Porcentaje":0.37},
+  {"Dia":"sábado","Hora":2,"Incidentes":36,"Porcentaje":0.31},
+  {"Dia":"sábado","Hora":3,"Incidentes":27,"Porcentaje":0.23},
+  {"Dia":"sábado","Hora":4,"Incidentes":35,"Porcentaje":0.30},
+  {"Dia":"sábado","Hora":5,"Incidentes":44,"Porcentaje":0.38},
+  {"Dia":"sábado","Hora":6,"Incidentes":43,"Porcentaje":0.37},
+  {"Dia":"sábado","Hora":7,"Incidentes":50,"Porcentaje":0.43},
+  {"Dia":"sábado","Hora":8,"Incidentes":52,"Porcentaje":0.44},
+  {"Dia":"sábado","Hora":9,"Incidentes":38,"Porcentaje":0.32},
+  {"Dia":"sábado","Hora":10,"Incidentes":54,"Porcentaje":0.46},
+  {"Dia":"sábado","Hora":11,"Incidentes":72,"Porcentaje":0.61},
+  {"Dia":"sábado","Hora":12,"Incidentes":108,"Porcentaje":0.92},
+  {"Dia":"sábado","Hora":13,"Incidentes":94,"Porcentaje":0.80},
+  {"Dia":"sábado","Hora":14,"Incidentes":75,"Porcentaje":0.64},
+  {"Dia":"sábado","Hora":15,"Incidentes":88,"Porcentaje":0.75},
+  {"Dia":"sábado","Hora":16,"Incidentes":76,"Porcentaje":0.65},
+  {"Dia":"sábado","Hora":17,"Incidentes":83,"Porcentaje":0.71},
+  {"Dia":"sábado","Hora":18,"Incidentes":68,"Porcentaje":0.58},
+  {"Dia":"sábado","Hora":19,"Incidentes":83,"Porcentaje":0.71},
+  {"Dia":"sábado","Hora":20,"Incidentes":91,"Porcentaje":0.78},
+  {"Dia":"sábado","Hora":21,"Incidentes":85,"Porcentaje":0.73},
+  {"Dia":"sábado","Hora":22,"Incidentes":49,"Porcentaje":0.42},
+  {"Dia":"sábado","Hora":23,"Incidentes":55,"Porcentaje":0.47},
+  {"Dia":"domingo","Hora":0,"Incidentes":43,"Porcentaje":0.37},
+  {"Dia":"domingo","Hora":1,"Incidentes":43,"Porcentaje":0.37},
+  {"Dia":"domingo","Hora":2,"Incidentes":40,"Porcentaje":0.34},
+  {"Dia":"domingo","Hora":3,"Incidentes":33,"Porcentaje":0.28},
+  {"Dia":"domingo","Hora":4,"Incidentes":25,"Porcentaje":0.21},
+  {"Dia":"domingo","Hora":5,"Incidentes":46,"Porcentaje":0.39},
+  {"Dia":"domingo","Hora":6,"Incidentes":62,"Porcentaje":0.53},
+  {"Dia":"domingo","Hora":7,"Incidentes":67,"Porcentaje":0.57},
+  {"Dia":"domingo","Hora":8,"Incidentes":37,"Porcentaje":0.32},
+  {"Dia":"domingo","Hora":9,"Incidentes":26,"Porcentaje":0.22},
+  {"Dia":"domingo","Hora":10,"Incidentes":29,"Porcentaje":0.25},
+  {"Dia":"domingo","Hora":11,"Incidentes":45,"Porcentaje":0.38},
+  {"Dia":"domingo","Hora":12,"Incidentes":55,"Porcentaje":0.47},
+  {"Dia":"domingo","Hora":13,"Incidentes":60,"Porcentaje":0.51},
+  {"Dia":"domingo","Hora":14,"Incidentes":56,"Porcentaje":0.48},
+  {"Dia":"domingo","Hora":15,"Incidentes":54,"Porcentaje":0.46},
+  {"Dia":"domingo","Hora":16,"Incidentes":56,"Porcentaje":0.48},
+  {"Dia":"domingo","Hora":17,"Incidentes":71,"Porcentaje":0.61},
+  {"Dia":"domingo","Hora":18,"Incidentes":44,"Porcentaje":0.38},
+  {"Dia":"domingo","Hora":19,"Incidentes":51,"Porcentaje":0.44},
+  {"Dia":"domingo","Hora":20,"Incidentes":58,"Porcentaje":0.50},
+  {"Dia":"domingo","Hora":21,"Incidentes":65,"Porcentaje":0.55},
+  {"Dia":"domingo","Hora":22,"Incidentes":51,"Porcentaje":0.44},
+  {"Dia":"domingo","Hora":23,"Incidentes":38,"Porcentaje":0.32}
+]; 
+
+    const daysOrder = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo'];
+    const yLabels = [...daysOrder].reverse(); 
+    const xLabels = Array.from({length: 24}, (_, i) => i);
+
+    let zMatrix = Array(7).fill().map(() => Array(24).fill(0));
+    let textMatrix = Array(7).fill().map(() => Array(24).fill(''));
+
+    rawData.forEach(item => {
+        const dayIndex = yLabels.indexOf(item.Dia);
+        const hourIndex = item.Hora;
+        if (dayIndex !== -1) {
+            zMatrix[dayIndex][hourIndex] = item.Incidentes;
+            textMatrix[dayIndex][hourIndex] = 
+                `<b>${item.Dia.toUpperCase()}</b><br>${item.Hora}:00h<br>Incidentes: ${item.Incidentes}`;
+        }
+    });
+
+    const categoricalPalette = [
+        [0.00, '#f3e7c2'], [0.15, '#f0d88a'], [0.35, '#f5b041'],
+        [0.55, '#f57c3d'], [0.75, '#ff3d2e'], [1.00, '#99002b']
+    ];
+
+    function renderPlot() {
+        const isMiniature = window.innerWidth < 500;
+
+        const data = [{
+            x: xLabels, y: yLabels, z: zMatrix, text: textMatrix,
+            hoverinfo: 'text', type: 'heatmap',
+            colorscale: categoricalPalette,
+            showscale: isMiniature ? false : true,
+            colorbar: { title: 'Nº', titleside: 'right' }
+        }];
+
+        const layout = {
+            margin: isMiniature ? 
+                { l: 45, r: 5, b: 25, t: 5 } : 
+                { l: 100, r: 80, b: 50, t: 60 },
+            xaxis: {
+                title: isMiniature ? '' : 'Hora del Día',
+                tickmode: 'array',
+                tickvals: [0, 6, 12, 18, 23],
+                fixedrange: true
+            },
+            yaxis: {
+                tickmode: 'array',
+                tickvals: yLabels,
+                
+                ticktext: yLabels.map(d => isMiniature ? d.charAt(0).toUpperCase() : d.charAt(0).toUpperCase() + d.slice(1)),
+                fixedrange: true
+            },
+            
+            title: isMiniature ? '' : { text: 'Distribução de Incidentes de Tránsito', font: { size: 18 } },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)'
+        };
+
+        Plotly.newPlot('heatmap', data, layout, { 
+            responsive: true, 
+            displayModeBar: false
+        });
+    }
+
+    renderPlot();
+    window.onresize = renderPlot;
+</script>
+</body>
+</html>
