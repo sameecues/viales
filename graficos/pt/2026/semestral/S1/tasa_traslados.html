@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribuição de Transferências</title>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        .chart-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 30px;
+            width: 100%;
+            max-width: 700px;
+            position: relative;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 18px;
+            color: #4a5568;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .logo-same {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        #miGrafico {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+    
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+
+    <div class="chart-container">
+        <div class="chart-header">
+            <h2 class="chart-title">Distribuição de Transferências</h2>
+            <img src="https://i.imgur.com/GXTFolo.png" alt="Logo SAME" class="logo-same">
+        </div>
+        
+        <div id="miGrafico"></div>
+    </div>
+
+    <script>
+        const trace = {
+            labels: ["Transferidos", "Não transferidos"],
+            values: [5358, 4976],
+            text: [
+                "Transferidos<br>N: 5358<br>%: 51.8%",
+                "Não transferidos<br>N: 4976<br>%: 48.2%"
+            ],
+            hoverinfo: "text",
+            textinfo: "label+percent",
+            type: "pie",
+            marker: {
+                colors: ["#0B1F3A", "#B0B7C3"],
+                line: {
+                    color: "rgba(255,255,255,1)",
+                    width: 2
+                }
+            }
+        };
+
+        const data = [trace];
+
+        const layout = {
+            showlegend: true,
+            legend: {
+                orientation: "v",
+                x: 1,
+                y: 0.9,
+                xanchor: "left",
+                yanchor: "top"
+            },
+            margin: { t: 10, b: 10, l: 10, r: 10 },
+            hovermode: "closest"
+        };
+
+        const config = {
+            responsive: true,
+            displayModeBar: false
+        };
+
+        Plotly.newPlot('miGrafico', data, layout, config);
+    </script>
+
+</body>
+</html>
