@@ -3,10 +3,10 @@
 ┣━━ 📁 reportes
 ┃   ┗━━ 📁 es (repite para 'en' y 'pt')
 ┃       ┗━━ 📁 año
-┃           ┣━━ 📄 año-mes.pdf                 <-- (Ruta PDF Mensual)
-┃           ┗━━ 📁 semestral
-┃               ┣━━ 📄 S1.pdf                  <-- (Ruta PDF Semestral)
-┃               ┗━━ 📄 S2.pdf                  <-- (Ruta PDF Semestral)
+┃       ┃   ┣━━ 📄 año-mes.pdf                 <-- (Ruta PDF Mensual)
+┃       ┗━━ 📁 semestral
+┃           ┣━━ 📄 S1.pdf                      <-- (Ruta PDF Semestral)
+┃           ┗━━ 📄 S2.pdf                      <-- (Ruta PDF Semestral)
 ┃
 ┣━━ 📁 graficos
 ┃   ┗━━ 📁 es (repite para 'en' y 'pt')
